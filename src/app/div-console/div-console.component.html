@@ -1,0 +1,17 @@
+<div class="console">
+    @if (this.errService.logMessages.length) {
+    <div class="controls">
+        <button (click)="clear()">Clear log</button>
+    </div>
+    }
+    <div class="container">
+        @for (m of this.errService.logMessages; track $index) {
+        <div class="log-entry" [class]="m.level">
+            <pre><span class="level">{{m.level | uppercase}}</span> <span class="datetime">{{m.datetime | date : 'yyyy-MM-dd HH:mm:ss.SSS' }}</span></pre>
+            <pre class="message">{{m.message}}</pre>
+            <pre class="error">{{m.error?.stack || m.error}}</pre>
+        </div>
+        }
+        <div class="scroll-anchor"></div>
+    </div>
+</div>
