@@ -1,16 +1,9 @@
-<div>
-  Test buttons:
-  <button (click)="debug()">debug</button>
-  <button (click)="info()">info</button>
-  <button (click)="warn()">warn</button>
-  <button (click)="throw()">throw</button>
-  
-  <app-div-console/>
-  
-  <br/>
-  
-  <div>
-    Angular CRUDy bot
-  </div>
+<h1>Angular CRUDy bot</h1>
 
-</div>
+<form (submit)="send()">
+  <input class="prompt" #prompt type="text" autofocus (focus)="prompt.select()" value="Add contact Ada Lovelace">
+  <button type="submit" class="button" (click)="send()">Send</button>
+</form>
+
+
+<app-div-console />

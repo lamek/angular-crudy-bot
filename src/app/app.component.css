@@ -1,0 +1,9 @@
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+input.prompt {
+    width: 40em;
+}
