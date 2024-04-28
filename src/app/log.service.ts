@@ -24,10 +24,7 @@ export class LogService {
   constructor() { }
 
   totext(...args: any[]): string {
-    console.log("args", args);
-
     return args.reduce((prev: any, curr: any, i: number, arr: any[]) => {
-      console.log("prev", prev, "curr", curr);
       prev = prev ? prev + " " : "";
       prev += JSON.stringify(curr, null, 2)
       return prev;

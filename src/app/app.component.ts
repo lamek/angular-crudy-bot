@@ -11,17 +11,39 @@ export class AppComponent {
   protected apiKey = viewChild.required<ElementRef<HTMLInputElement>>('apiKey');
   protected prompt = viewChild.required<ElementRef<HTMLInputElement>>('prompt');
 
+  example_response = [
+    {
+      "name": "createTable",
+      "args": {
+        "columns": [
+          {
+            "columnName": "first_name",
+            "columnType": "string"
+          },
+          {
+            "columnType": "string",
+            "columnName": "last_name"
+          }
+        ],
+        "tableName": "contacts"
+      }
+    }
+  ];
+
+  tables = this.example_response.map(ddl => ddl['args']);
+
   constructor(public log: LogService) { }
 
   send() {
-    this.log.info("sending…");
-    this.generateResponse();
+    const prompt = this.prompt().nativeElement.value;
+    this.log.info("Sending", prompt);
+    this.generateResponse(prompt);
 
     // Prevent form submission.
     return false;
   }
 
-  async generateResponse() {
+  async generateResponse(prompt: string) {
     try {
       const apiKey = this.apiKey().nativeElement.value;
       if (!apiKey) {
@@ -100,12 +122,13 @@ export class AppComponent {
         }],
       };
 
-      const result = await model.generateContent(this.prompt().nativeElement.value);
+      const result = await model.generateContent(prompt);
       const response = await result.response;
-      this.log.info("response:" + response);
       const calls = response.functionCalls();
       if (calls) {
         this.log.info("response.functionCalls():", calls);
+        this.tables = calls.map(ddl => ddl['args']) as any;
+        this.log.info("tables", this.tables);
       }
       if (response.text()) {
         this.log.info("response.text():", response.text());

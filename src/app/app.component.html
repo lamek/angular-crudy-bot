@@ -5,18 +5,40 @@
 <form (submit)="send()">
   <div class="row">
     <label for="apiKey">API Key</label>
-     <input placeholder="API key" class="api-key" #apiKey required size="40" value="">
+    <input placeholder="API key" class="api-key" #apiKey required size="40"
+      value="">
   </div>
 
   <div class="row">
     <label for="prompt">Prompt</label>
-    <input class="prompt" #prompt type="text" autofocus (focus)="prompt.select()" value="Add contact Ada Lovelace">
+    <input class="prompt" #prompt type="text" autofocus (focus)="prompt.select()" value="Add contact Ada Lovelace 10 December 1815 - 27 November 1852">
   </div>
 
   <div class="row">
     <button type="submit" class="button" (click)="send()">Send</button>
   </div>
 </form>
+
+@for (table of tables; track $index) {
+<table class="table">
+  <caption><code class="table-name">{{table.tableName}}</code> table</caption>
+  <thead>
+    <tr>
+      <th class="column-name">Column name</th>
+      <th class="column-type">Column type</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (column of table.columns; track $index) {
+    <tr>
+      <td class="column-name code">{{column.columnName}}</td>
+      <td class="column-type code">{{column.columnType}}</td>
+    </tr>
+    }
+  </tbody>
+</table>
+<pre>{{table|json}}</pre>
+}
 
 
 <app-div-console />

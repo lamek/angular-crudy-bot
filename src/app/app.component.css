@@ -4,7 +4,7 @@ form {
     align-items: start;
 }
 
-.api-key {
+code, .code, .api-key {
     font-family: 'Courier New', Courier, monospace;
 }
 
@@ -22,4 +22,31 @@ input.prompt {
 
 .row * + * {
     margin: 0 0 0 8px;
+}
+
+table {
+    margin: 12px 0;
+}
+
+table th, table td, table caption {
+    padding: 2px 4px;
+}
+
+table caption {
+    text-align: left;
+    background-color: #cde;
+}    
+
+table th {
+    background-color: #bcd;
+}
+
+table td {
+    background-color: #def;
+}
+
+.table-column {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid red;
 }
