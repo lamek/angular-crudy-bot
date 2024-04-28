@@ -37,6 +37,12 @@ export class AppComponent {
 
   protected tables: Table[] = [];
 
+  protected samplePrompts = [
+    "Add contact Ada Lovelace 10 December 1815 - 27 November 1852",
+    "Create shipping address: 123 Main Street, Anytown, USA 12345",
+    "Remember anniversary for April Fools day",
+  ];
+
   constructor(public log: LogService) { }
 
   createTable(self: AppComponent, table: Table): boolean {

@@ -4,7 +4,9 @@ form {
     align-items: start;
 }
 
-code, .code, .api-key {
+code,
+.code,
+.api-key {
     font-family: monospace;
 }
 
@@ -16,28 +18,39 @@ input.prompt {
     display: flex;
 }
 
-.row + .row {
+.row+.row {
     margin: 8px 0 0 0;
 }
 
-.row * + * {
+.row *+* {
     margin: 0 0 0 8px;
+}
+
+.tables {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
 }
 
 table {
     margin: 12px 0;
 }
 
-table th, table td {
+table+table {
+    margin-left: 8px;
+}
+
+table th,
+table td {
     padding: 2px 4px;
 }
 
- table caption {
+table caption {
     padding: 2px 6px;
     margin: 0 2px;
     text-align: left;
     background-color: #ced;
-}    
+}
 
 table th {
     background-color: #bcd;
@@ -57,8 +70,10 @@ table td {
     opacity: 0.5;
 }
 
-.tables {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
+.section+.section {
+    margin-top: 24px;
+}
+
+label {
+    font-weight: bold;
 }

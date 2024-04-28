@@ -3,31 +3,47 @@
 
 
 <form (submit)="send()">
-  <div class="row">
-    <div class="help">Visit <a href="aistudio.google.com">Google AI Studio</a>, and click "Get API key".</div>
+  <div class="section">
+    <div class="row">
+      <div class="help">Visit <a href="aistudio.google.com">Google AI Studio</a>, and click "Get API key".</div>
+    </div>
+
+    <div class="row">
+      <label for="apiKey">API Key</label>
+      <input placeholder="Gemini API key" class="api-key" #apiKey required size="40"
+        value="">
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="row">
+    <label for="prompt">Your prompt</label>
   </div>
 
   <div class="row">
-    <label for="apiKey">API Key</label>
-    <input placeholder="Gemini API key" class="api-key" #apiKey required size="40"
-      value="">
-  </div>
-
-  <div class="row">
-    <label for="prompt">Prompt</label>
     <input class="prompt" #prompt type="text" autofocus (focus)="prompt.select()"
       value="Add contact Ada Lovelace 10 December 1815 - 27 November 1852">
-  </div>
-
-  <div class="row">
     <button type="submit" class="button" [disabled]="waiting" (click)="send()">
-      @if (waiting) {
-      Waiting for repsponse…
-      } @else {
-      Send
-      }
+      @if (waiting) { Waiting for repsponse…} @else {Send}
     </button>
   </div>
+</div>
+
+<div class="section">
+<div class="row">
+    <label for="prompt">Sample prompts to try</label>
+  </div>
+
+  @for (p of samplePrompts; track $index) {
+  <div class="row">
+    <input class="prompt" #prompt type="text" autofocus (focus)="prompt.select()" [value]="p">
+    <button type="submit" class="button" [disabled]="waiting" (click)="send()">
+      @if (waiting) { Waiting for repsponse…} @else {Send}
+    </button>
+  </div>
+  }
+</div>
+
 </form>
 
 <div class="tables">
