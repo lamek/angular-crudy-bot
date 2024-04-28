@@ -1,4 +1,4 @@
-import { Component, ElementRef, viewChild } from '@angular/core';
+import { Component, ElementRef, inject, viewChild } from '@angular/core';
 import { LogService as LogService } from './log.service';
 import { FunctionCallingConfig, FunctionCallingMode, FunctionDeclaration, FunctionDeclarationSchema, FunctionDeclarationSchemaProperty, FunctionDeclarationSchemaType, GenerativeModel, GoogleGenerativeAI, ToolConfig } from '@google/generative-ai';
 
@@ -15,6 +15,14 @@ type Table = {
   columns: Column[],
 };
 
+interface DbFunction {
+  (log: LogService, ...args: any[]): boolean;
+}
+
+interface DbFunctions {
+  [fname: string]: DbFunction
+};
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -27,6 +35,16 @@ export class AppComponent {
   protected tables: Table[] = [];
 
   constructor(public log: LogService) { }
+
+  createTable(self: AppComponent, table: Table): boolean {
+    // self.log.info("createTable", table);
+    self.tables.push(table);
+    return true;
+  }
+
+  protected dbfunctions: { [functionName: string]: Function } = {
+    createTable: this.createTable,
+  };
 
   send() {
     const prompt = this.prompt().nativeElement.value;
@@ -120,12 +138,16 @@ export class AppComponent {
       const response = await result.response;
       const calls = response.functionCalls();
       if (calls) {
-        this.log.info("response.functionCalls():", calls);
-        this.tables = calls.map(ddl => ddl['args']) as any;
+        calls.forEach((fc, i) => {
+          this.log.info("Received function call response:", fc);
+          const f = this.dbfunctions[fc.name];
+          const success = f(this, fc.args);
+          this.log.info(fc.name, "->", success ? "Success." : "Failed.");
+        });
         this.log.info("tables", this.tables);
       }
       if (response.text()) {
-        this.log.info("response.text():", response.text());
+        this.log.info("Received text response:", response.text());
       }
     } catch (e) {
       this.log.catch(e)

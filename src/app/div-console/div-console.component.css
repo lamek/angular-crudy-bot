@@ -6,7 +6,7 @@
 
 .controls {
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
     background-color: #00000011;
     padding: 4px;
     margin: 0 0 8px 0;

@@ -4,14 +4,19 @@
 
 <form (submit)="send()">
   <div class="row">
+    <div class="help">Visit <a href="aistudio.google.com">Google AI Studio</a>, and click "Get API key".</div>
+  </div>
+
+  <div class="row">
     <label for="apiKey">API Key</label>
-    <input placeholder="API key" class="api-key" #apiKey required size="40"
+    <input placeholder="Gemini API key" class="api-key" #apiKey required size="40"
       value="">
   </div>
 
   <div class="row">
     <label for="prompt">Prompt</label>
-    <input class="prompt" #prompt type="text" autofocus (focus)="prompt.select()" value="Add contact Ada Lovelace 10 December 1815 - 27 November 1852">
+    <input class="prompt" #prompt type="text" autofocus (focus)="prompt.select()"
+      value="Add contact Ada Lovelace 10 December 1815 - 27 November 1852">
   </div>
 
   <div class="row">
@@ -37,7 +42,7 @@
     }
   </tbody>
 </table>
-<pre>{{table|json}}</pre>
+<!-- <pre>{{table|json}}</pre> -->
 }
 
 
