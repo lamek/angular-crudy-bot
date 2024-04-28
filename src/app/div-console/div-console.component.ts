@@ -1,5 +1,5 @@
 import { Component, Injectable, InjectionToken } from '@angular/core';
-import { ErrorService } from '../error.service';
+import { LogService } from '../log.service';
 
 @Component({
   selector: 'app-div-console',
@@ -8,7 +8,7 @@ import { ErrorService } from '../error.service';
 })
 export class DivConsoleComponent {
   constructor(
-    public errService: ErrorService
+    public errService: LogService
   ) {  }
 
   clear() {

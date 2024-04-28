@@ -7,7 +7,7 @@ enum Level {
   error = "error",
 }
 
-interface DivMessage {
+interface LogMessage {
   level: Level;
   datetime: Date;
   message?: string;
@@ -17,9 +17,9 @@ interface DivMessage {
 @Injectable({
   providedIn: 'root'
 })
-export class ErrorService {
+export class LogService {
 
-  logMessages: DivMessage[] = [];
+  logMessages: LogMessage[] = [];
 
   constructor() { }
 
@@ -35,14 +35,20 @@ export class ErrorService {
     this.logMessages.push({ level: Level.warn, datetime: new Date(), message: msg, error: undefined });
   }
 
-  error(err?: Error, msg?: string) {
-    this.logMessages.push({ level: Level.error, datetime: new Date(), message: msg, error: err });
-    if (msg) {
-      console.log(msg);
-    }  
-    if (err) {
-      console.log(err.stack);
-    }  
-  }  
+  error(msg: string) {
+    this.logMessages.push({ level: Level.error, datetime: new Date(), message: msg, error: undefined });
+  }
+
+  catch(err: any) {
+    if (err instanceof Error) {
+      this.handle(err as Error);
+    } else {
+      this.logMessages.push({ level: Level.error, datetime: new Date(), message: undefined, error: new Error("caught", { cause: err }) });
+    }
+  }
+
+  handle(err: Error) {
+    this.logMessages.push({ level: Level.error, datetime: new Date(), message: undefined, error: err });
+  }
 
 }
