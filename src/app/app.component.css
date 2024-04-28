@@ -56,3 +56,9 @@ table td {
 .help {
     opacity: 0.5;
 }
+
+.tables {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}

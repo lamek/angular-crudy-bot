@@ -20,30 +20,38 @@
   </div>
 
   <div class="row">
-    <button type="submit" class="button" (click)="send()">Send</button>
+    <button type="submit" class="button" [disabled]="waiting" (click)="send()">
+      @if (waiting) {
+      Waiting for repsponse…
+      } @else {
+      Send
+      }
+    </button>
   </div>
 </form>
 
-@for (table of tables; track $index) {
-<table class="table">
-  <caption><code class="table-name">{{table.tableName}}</code> table</caption>
-  <thead>
-    <tr>
-      <th class="column-name">Column name</th>
-      <th class="column-type">Column type</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (column of table.columns; track $index) {
-    <tr>
-      <td class="column-name code">{{column.columnName}}</td>
-      <td class="column-type code">{{column.columnType}}</td>
-    </tr>
-    }
-  </tbody>
-</table>
-<!-- <pre>{{table|json}}</pre> -->
-}
+<div class="tables">
+  @for (table of tables; track $index) {
+  <table class="table">
+    <caption><code class="table-name">{{table.tableName}}</code> table</caption>
+    <thead>
+      <tr>
+        <th class="column-name">Column name</th>
+        <th class="column-type">Column type</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (column of table.columns; track $index) {
+      <tr>
+        <td class="column-name code">{{column.columnName}}</td>
+        <td class="column-type code">{{column.columnType}}</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  <!-- <pre>{{table|json}}</pre> -->
+  }
+</div>
 
 
 <app-div-console />

@@ -26,7 +26,14 @@ export class LogService {
   totext(...args: any[]): string {
     return args.reduce((prev: any, curr: any, i: number, arr: any[]) => {
       prev = prev ? prev + " " : "";
-      prev += JSON.stringify(curr, null, 2)
+      switch (typeof curr) {
+        case "string":
+          prev += curr;
+          break;
+        default:
+          prev += JSON.stringify(curr, null, 2)
+          break;
+      }
       return prev;
     });
   }

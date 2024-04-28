@@ -32,6 +32,9 @@ export class AppComponent {
   protected apiKey = viewChild.required<ElementRef<HTMLInputElement>>('apiKey');
   protected prompt = viewChild.required<ElementRef<HTMLInputElement>>('prompt');
 
+  // True while waiting for Gemini API response.
+  protected waiting = false;
+
   protected tables: Table[] = [];
 
   constructor(public log: LogService) { }
@@ -47,8 +50,16 @@ export class AppComponent {
   };
 
   send() {
+    if (this.waiting) {
+      this.log.warn("Unable to send, still waiting for response." +
+        " Reload page to restart."
+      )
+      return;
+    }
     const prompt = this.prompt().nativeElement.value;
     this.log.info("Sending", prompt);
+
+    // async call.
     this.generateResponse(prompt);
 
     // Prevent form submission.
@@ -56,6 +67,7 @@ export class AppComponent {
   }
 
   async generateResponse(prompt: string) {
+    this.waiting = true;
     try {
       const apiKey = this.apiKey().nativeElement.value;
       if (!apiKey) {
@@ -142,15 +154,17 @@ export class AppComponent {
           this.log.info("Received function call response:", fc);
           const f = this.dbfunctions[fc.name];
           const success = f(this, fc.args);
-          this.log.info(fc.name, "->", success ? "Success." : "Failed.");
+          this.log.info(fc.name + "(…):", success ? "success" : "FAILED");
         });
-        this.log.info("tables", this.tables);
+        // this.log.info("tables", this.tables);
       }
       if (response.text()) {
         this.log.info("Received text response:", response.text());
       }
     } catch (e) {
       this.log.catch(e)
+    } finally {
+      this.waiting = false;
     }
   }
 }
