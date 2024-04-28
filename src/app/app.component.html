@@ -17,32 +17,32 @@
 
   <div class="section">
     <div class="row">
-    <label for="prompt">Your prompt</label>
+      <label for="prompt">Your prompt</label>
+    </div>
+
+    <div class="row">
+      <input class="prompt" #prompt type="text" autofocus (focus)="prompt.select()"
+        placeholder="Describe data you would like to store in a database">
+      <button type="submit" class="button" [disabled]="waiting" (click)="send()">
+        @if (waiting) { Waiting for repsponse…} @else {Send}
+      </button>
+    </div>
   </div>
 
-  <div class="row">
-    <input class="prompt" #prompt type="text" autofocus (focus)="prompt.select()"
-      value="Add contact Ada Lovelace 10 December 1815 - 27 November 1852">
-    <button type="submit" class="button" [disabled]="waiting" (click)="send()">
-      @if (waiting) { Waiting for repsponse…} @else {Send}
-    </button>
-  </div>
-</div>
+  <div class="section">
+    <div class="row">
+      <label for="prompt">Sample prompts to try</label>
+    </div>
 
-<div class="section">
-<div class="row">
-    <label for="prompt">Sample prompts to try</label>
+    @for (p of samplePrompts; track $index) {
+    <div class="row">
+      <input class="prompt" #prompt type="text" autofocus (focus)="prompt.select()" [value]="p">
+      <button type="submit" class="button" [disabled]="waiting" (click)="send()">
+        @if (waiting) { Waiting for repsponse…} @else {Send}
+      </button>
+    </div>
+    }
   </div>
-
-  @for (p of samplePrompts; track $index) {
-  <div class="row">
-    <input class="prompt" #prompt type="text" autofocus (focus)="prompt.select()" [value]="p">
-    <button type="submit" class="button" [disabled]="waiting" (click)="send()">
-      @if (waiting) { Waiting for repsponse…} @else {Send}
-    </button>
-  </div>
-  }
-</div>
 
 </form>
 
