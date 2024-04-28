@@ -77,3 +77,11 @@ table td {
 label, .label {
     font-weight: bold;
 }
+
+.status.ready {
+    color: green;
+}
+
+.status.waiting {
+    color: orange;
+}

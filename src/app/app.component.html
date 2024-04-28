@@ -21,11 +21,9 @@
     </div>
 
     <div class="row">
-      <input id="prompt" class="prompt" #prompt type="text" autofocus (focus)="prompt.select()"
+      <input id="prompt" class="prompt" #prompt type="text" autofocus
         placeholder="Describe data you would like to store in a database">
-      <button type="submit" class="button" [disabled]="waiting" (click)="send(prompt.value)">
-        @if (waiting) { Waiting for repsponse…} @else {Send}
-      </button>
+      <button type="submit" class="button" [disabled]="waiting" (click)="send(prompt.value)">Send</button>
     </div>
   </div>
 
@@ -36,13 +34,20 @@
 
     @for (p of samplePrompts; track $index) {
     <div class="row">
-      <input [id]="'prompt' + $index" class="prompt" #sampleprompt type="text" autofocus (focus)="prompt.select()" [value]="p">
-      <button type="submit" class="button" [disabled]="waiting" (click)="send(sampleprompt.value)">
-        @if (waiting) { Waiting for repsponse…} @else {Send}
-      </button>
+      <input [id]="'prompt' + $index" class="prompt" #sampleprompt type="text" [value]="p">
+      <button type="submit" class="button" [disabled]="waiting" (click)="send(sampleprompt.value)">Send</button>
     </div>
     }
   </div>
+
+
+  <div class="section">
+    <div class="row">
+      <div class="label">Status</div>
+      <div class="status" [class]="waiting ? 'waiting' : 'ready'">@if(waiting){Waiting for response…}@else{Ready.}</div>
+    </div>
+  </div>
+
 
 </form>
 
