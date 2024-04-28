@@ -2,6 +2,19 @@ import { Component, ElementRef, viewChild } from '@angular/core';
 import { LogService as LogService } from './log.service';
 import { FunctionCallingConfig, FunctionCallingMode, FunctionDeclaration, FunctionDeclarationSchema, FunctionDeclarationSchemaProperty, FunctionDeclarationSchemaType, GenerativeModel, GoogleGenerativeAI, ToolConfig } from '@google/generative-ai';
 
+const ColumnTypeValues = ['string', 'integer', 'date'] as const;
+type ColumnType = typeof ColumnTypeValues[number];
+
+type Column = {
+  columnName: string,
+  columnType: ColumnType,
+};
+
+type Table = {
+  tableName: string,
+  columns: Column[],
+};
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,26 +24,7 @@ export class AppComponent {
   protected apiKey = viewChild.required<ElementRef<HTMLInputElement>>('apiKey');
   protected prompt = viewChild.required<ElementRef<HTMLInputElement>>('prompt');
 
-  example_response = [
-    {
-      "name": "createTable",
-      "args": {
-        "columns": [
-          {
-            "columnName": "first_name",
-            "columnType": "string"
-          },
-          {
-            "columnType": "string",
-            "columnName": "last_name"
-          }
-        ],
-        "tableName": "contacts"
-      }
-    }
-  ];
-
-  tables = this.example_response.map(ddl => ddl['args']);
+  protected tables: Table[] = [];
 
   constructor(public log: LogService) { }
 
@@ -61,7 +55,7 @@ export class AppComponent {
         columnType: {
           type: FunctionDeclarationSchemaType.STRING,
           nullable: false,
-          enum: ["string", "integer", "date",],
+          enum: [...ColumnTypeValues],
           description:
             "Column type. Specifies the type of data that can be stored in this column.",
         },
