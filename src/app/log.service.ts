@@ -39,18 +39,22 @@ export class LogService {
   }
 
   debug(...args: any[]) {
+    console.debug(...args);
     this.logMessages.push({ level: Level.debug, datetime: new Date(), message: this.totext(...args), error: undefined });
   }
 
   info(...args: any[]) {
+    console.info(...args);
     this.logMessages.push({ level: Level.info, datetime: new Date(), message: this.totext(...args), error: undefined });
   }
 
   warn(...args: any[]) {
+    console.warn(...args);
     this.logMessages.push({ level: Level.warn, datetime: new Date(), message: this.totext(...args), error: undefined });
   }
 
   error(...args: any[]) {
+    console.error(...args);
     this.logMessages.push({ level: Level.error, datetime: new Date(), message: this.totext(...args), error: undefined });
   }
 
@@ -58,11 +62,13 @@ export class LogService {
     if (err instanceof Error) {
       this.handle(err as Error);
     } else {
+      console.error(err);
       this.logMessages.push({ level: Level.error, datetime: new Date(), message: undefined, error: new Error("caught", { cause: err }) });
     }
   }
 
   handle(err: Error) {
+    console.error(err);
     this.logMessages.push({ level: Level.error, datetime: new Date(), message: undefined, error: err });
   }
 

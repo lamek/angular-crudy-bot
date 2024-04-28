@@ -2,7 +2,7 @@
 
 
 
-<form (submit)="send()">
+<form (submit)="send(prompt.value)">
   <div class="section">
     <div class="row">
       <div class="help">Visit <a href="aistudio.google.com">Google AI Studio</a>, and click "Get API key".</div>
@@ -10,7 +10,7 @@
 
     <div class="row">
       <label for="apiKey">API Key</label>
-      <input placeholder="Gemini API key" class="api-key" #apiKey required size="40"
+      <input id="apiKey" placeholder="Gemini API key" class="api-key" #apiKey required size="40"
         value="">
     </div>
   </div>
@@ -21,9 +21,9 @@
     </div>
 
     <div class="row">
-      <input class="prompt" #prompt type="text" autofocus (focus)="prompt.select()"
+      <input id="prompt" class="prompt" #prompt type="text" autofocus (focus)="prompt.select()"
         placeholder="Describe data you would like to store in a database">
-      <button type="submit" class="button" [disabled]="waiting" (click)="send()">
+      <button type="submit" class="button" [disabled]="waiting" (click)="send(prompt.value)">
         @if (waiting) { Waiting for repsponse…} @else {Send}
       </button>
     </div>
@@ -31,13 +31,13 @@
 
   <div class="section">
     <div class="row">
-      <label for="prompt">Sample prompts to try</label>
+      <div class="label">Sample prompts to try</div>
     </div>
 
     @for (p of samplePrompts; track $index) {
     <div class="row">
-      <input class="prompt" #prompt type="text" autofocus (focus)="prompt.select()" [value]="p">
-      <button type="submit" class="button" [disabled]="waiting" (click)="send()">
+      <input [id]="'prompt' + $index" class="prompt" #sampleprompt type="text" autofocus (focus)="prompt.select()" [value]="p">
+      <button type="submit" class="button" [disabled]="waiting" (click)="send(sampleprompt.value)">
         @if (waiting) { Waiting for repsponse…} @else {Send}
       </button>
     </div>
@@ -47,7 +47,7 @@
 </form>
 
 <div class="tables">
-  @for (table of tables; track $index) {
+  @for (table of database.tables; track $index) {
   <table class="table">
     <caption><code class="table-name">{{table.tableName}}</code> table</caption>
     <thead>

@@ -1,27 +1,7 @@
-import { Component, ElementRef, inject, viewChild } from '@angular/core';
-import { LogService as LogService } from './log.service';
-import { FunctionCallingConfig, FunctionCallingMode, FunctionDeclaration, FunctionDeclarationSchema, FunctionDeclarationSchemaProperty, FunctionDeclarationSchemaType, GenerativeModel, GoogleGenerativeAI, ToolConfig } from '@google/generative-ai';
-
-const ColumnTypeValues = ['string', 'integer', 'date'] as const;
-type ColumnType = typeof ColumnTypeValues[number];
-
-type Column = {
-  columnName: string,
-  columnType: ColumnType,
-};
-
-type Table = {
-  tableName: string,
-  columns: Column[],
-};
-
-interface DbFunction {
-  (log: LogService, ...args: any[]): boolean;
-}
-
-interface DbFunctions {
-  [fname: string]: DbFunction
-};
+import { Component, ElementRef, viewChild } from '@angular/core';
+import { DatabaseService } from './database.service';
+import { GeminiService } from './gemini.service';
+import { LogService } from './log.service';
 
 @Component({
   selector: 'app-root',
@@ -30,12 +10,9 @@ interface DbFunctions {
 })
 export class AppComponent {
   protected apiKey = viewChild.required<ElementRef<HTMLInputElement>>('apiKey');
-  protected prompt = viewChild.required<ElementRef<HTMLInputElement>>('prompt');
 
   // True while waiting for Gemini API response.
   protected waiting = false;
-
-  protected tables: Table[] = [];
 
   protected samplePrompts = [
     "Add contact Ada Lovelace 10 December 1815 - 27 November 1852",
@@ -43,26 +20,26 @@ export class AppComponent {
     "Remember anniversary for April Fools day",
   ];
 
-  constructor(public log: LogService) { }
+  constructor(
+    private log: LogService,
+    private gemini: GeminiService,
+    protected database: DatabaseService,
+  ) { }
 
-  createTable(self: AppComponent, table: Table): boolean {
-    // self.log.info("createTable", table);
-    self.tables.push(table);
-    return true;
-  }
-
-  protected dbfunctions: { [functionName: string]: Function } = {
-    createTable: this.createTable,
-  };
-
-  send() {
+  send(prompt: string) {
     if (this.waiting) {
       this.log.warn("Unable to send, still waiting for response." +
         " Reload page to restart."
-      )
-      return;
+      );
+      // Prevent form submission.
+      return false;
     }
-    const prompt = this.prompt().nativeElement.value;
+    if (!prompt) {
+      this.log.warn("Prompt is empty. Nothing to send.");
+      // Prevent form submission.
+      return false;
+    }
+
     this.log.info("Sending", prompt);
 
     // async call.
@@ -73,100 +50,15 @@ export class AppComponent {
   }
 
   async generateResponse(prompt: string) {
+    const apiKey = this.apiKey().nativeElement.value;
+    if (!apiKey) {
+      this.log.error('API Key must be provided');
+      return;
+    }
+
     this.waiting = true;
     try {
-      const apiKey = this.apiKey().nativeElement.value;
-      if (!apiKey) {
-        this.log.error('API Key must be provided');
-        return;
-      }
-
-      const tableColumnProperties: { [k: string]: FunctionDeclarationSchemaProperty } = {
-        columnName: {
-          type: FunctionDeclarationSchemaType.STRING,
-          nullable: false,
-          description:
-            "Column name. Column names should be lowercase, and use snake_case.",
-        },
-        columnType: {
-          type: FunctionDeclarationSchemaType.STRING,
-          nullable: false,
-          enum: [...ColumnTypeValues],
-          description:
-            "Column type. Specifies the type of data that can be stored in this column.",
-        },
-      };
-
-      const tableColumnSchema: FunctionDeclarationSchema = {
-        type: FunctionDeclarationSchemaType.OBJECT,
-        description: "Table column. Specifies the properties of a table column.",
-        properties: tableColumnProperties,
-        required: ["columnName, columnType"],
-      };
-
-      const tableProperties: { [k: string]: FunctionDeclarationSchemaProperty } = {
-        tableName: {
-          type: FunctionDeclarationSchemaType.STRING,
-          nullable: false,
-          description:
-            "Table name. Table names should be lowercase, and use snake_case.",
-        },
-        columns: {
-          type: FunctionDeclarationSchemaType.ARRAY,
-          nullable: false,
-          description: "Array of table columns definitions.",
-          items: tableColumnSchema,
-        },
-      };
-
-      const createTableFunctionDeclaration: FunctionDeclaration = {
-        name: "createTable",
-        parameters: {
-          type: FunctionDeclarationSchemaType.OBJECT,
-          description: "Create database table.",
-          properties: tableProperties,
-          required: ["tableName", "columns"],
-        },
-      };
-
-      const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest" });
-
-      model.tools = [{ functionDeclarations: [createTableFunctionDeclaration] }];
-
-      model.toolConfig = {
-        functionCallingConfig: {
-          // Require function calling response.
-          // mode: FunctionCallingMode.ANY,
-          // allowedFunctionNames: ["createTable"],
-        }
-      };
-
-      model.systemInstruction = {
-        role: "user",
-        parts: [{
-          text: "You are 'CRUDy bot', an AI database agent." +
-            " Users write basic CRUD (Create, Read, Update, Delete) operations in plain text." +
-            " For each such statement, you determine a suitable database table structure." +
-            " You respond with the a function call that would create that table strucutre."
-        }],
-      };
-
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      const calls = response.functionCalls();
-      if (calls) {
-        calls.forEach((fc, i) => {
-          this.log.info("Received function call response:", fc);
-          const f = this.dbfunctions[fc.name];
-          const success = f(this, fc.args);
-          this.log.info(fc.name + "(…):", success ? "success" : "FAILED");
-        });
-        // this.log.info("tables", this.tables);
-      }
-      if (response.text()) {
-        this.log.info("Received text response:", response.text());
-      }
+      await this.gemini.generateResponse(apiKey, prompt);
     } catch (e) {
       this.log.catch(e)
     } finally {
