@@ -4,6 +4,22 @@ form {
     align-items: start;
 }
 
+.api-key {
+    font-family: 'Courier New', Courier, monospace;
+}
+
 input.prompt {
     width: 40em;
+}
+
+.row {
+    display: flex;
+}
+
+.row + .row {
+    margin: 8px 0 0 0;
+}
+
+.row * + * {
+    margin: 0 0 0 8px;
 }
