@@ -3,12 +3,17 @@
     <div class="banner">
         <div>Activity log and debug messages</div>
         <div class="controls">
-            <button (click)="scrollToEnd()">Scroll to end</button>
+            @if(expanded) {
             <button (click)="clear()">Clear log</button>
+            <button (click)="scrollToEnd()">Scroll to end</button>
+            }
+            <button (click)="toggle()">
+                @if (expanded) {Close} @else {Expand to see {{log.logMessages.length}} message(s)}
+            </button>
         </div>
     </div>
     }
-    <div class="container">
+    <div class="container" [hidden]="!expanded">
         @for (m of this.log.logMessages; track $index) {
         <div class="log-entry" [class]="m.level">
             <pre><span class="level">{{m.level | uppercase}}</span> <span class="datetime">{{m.datetime | date : 'yyyy-MM-dd HH:mm:ss.SSS' }}</span></pre>
