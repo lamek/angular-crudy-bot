@@ -22,7 +22,7 @@ export class AppComponent {
 
   constructor(
     private log: LogService,
-    private gemini: GeminiService,
+    protected gemini: GeminiService,
     protected database: DatabaseService,
   ) { }
 
@@ -58,7 +58,7 @@ export class AppComponent {
     try {
       await this.gemini.generateResponse(apiKey, prompt);
     } catch (e) {
-      this.log.catch(e)
+      this.log.catch(e);
     } finally {
       this.waiting = false;
     }

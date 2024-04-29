@@ -1,5 +1,5 @@
 form {
-    display: flex;
+display: flex;
     flex-direction: column;
     align-items: start;
 }
@@ -70,7 +70,7 @@ table td {
     opacity: 0.5;
 }
 
-.section+.section {
+.section {
     margin-top: 24px;
 }
 
@@ -84,4 +84,8 @@ label, .label {
 
 .status.waiting {
     color: orange;
+}
+
+.last-response {
+    white-space: pre-wrap;
 }

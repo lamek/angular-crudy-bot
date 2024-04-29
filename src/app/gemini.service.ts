@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { FunctionDeclaration, FunctionDeclarationSchema, FunctionDeclarationSchemaProperty, FunctionDeclarationSchemaType, GoogleGenerativeAI } from '@google/generative-ai';
-import { LogService } from './log.service';
-import { ColumnTypeValues, DatabaseService } from './database.service';
+import { Injectable } from "@angular/core";
+import { FunctionDeclaration, FunctionDeclarationSchema, FunctionDeclarationSchemaProperty, FunctionDeclarationSchemaType, GoogleGenerativeAI } from "@google/generative-ai";
+import { LogService } from "./log.service";
+import { ColumnTypeValues, DatabaseService } from "./database.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class GeminiService {
 
@@ -13,7 +13,11 @@ export class GeminiService {
     private database: DatabaseService,
   ) { }
 
+  // Most recent response.
+  public lastResponse = "";
+
   async generateResponse(apiKey: string, prompt: string) {
+    this.lastResponse = "";
 
     const tableNameSchema: FunctionDeclarationSchemaProperty = {
       type: FunctionDeclarationSchemaType.STRING,
@@ -121,22 +125,31 @@ export class GeminiService {
     };
 
     prompt = prompt + "\nThe current data model is:\n" +
-      JSON.stringify(this.database.tables)
+      JSON.stringify(this.database.tables);
     this.log.info("Sending", JSON.stringify(prompt));
-    const result = await model.generateContent(prompt);
+    try {
 
-    const response = await result.response;
-    const calls = response.functionCalls();
-    if (calls) {
-      calls.forEach((fc, i) => {
-        this.log.info("Received function call response:", fc);
-        const success = this.database.callFunction(fc);
-        this.log.info(fc.name + "(…):", success ? "success" : "FAILED");
-      });
-      // this.log.info("tables", this.tables);
-    }
-    if (response.text()) {
-      this.log.info("Received text response:", response.text());
+      const result = await model.generateContent(prompt);
+
+      const response = await result.response;
+      const calls = response.functionCalls();
+      if (calls) {
+        calls.forEach((fc, i) => {
+          this.log.info("Received function call response:", fc);
+          const success = this.database.callFunction(fc);
+          this.log.info(fc.name + "(…):", success ? "success" : "FAILED");
+          this.lastResponse = "Function call:\n" + JSON.stringify(fc);
+        });
+      } else if (response.text()) {
+        this.log.info("Received text response:", response.text());
+        this.lastResponse = response.text();
+      } else {
+        this.lastResponse = "Unknown response: " + JSON.stringify(response);
+      }
+    } catch (e) {
+      this.lastResponse = '' + e;
+      // Rethrow.
+      throw e;
     }
   }
 }

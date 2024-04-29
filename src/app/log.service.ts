@@ -63,13 +63,13 @@ export class LogService {
       this.handle(err as Error);
     } else {
       console.error(err);
-      this.logMessages.push({ level: Level.error, datetime: new Date(), message: undefined, error: new Error("caught", { cause: err }) });
+      this.logMessages.push({ level: Level.error, datetime: new Date(), message: undefined, error: new Error("Caught", { cause: err }) });
     }
   }
 
   handle(err: Error) {
-    console.error(err);
-    this.logMessages.push({ level: Level.error, datetime: new Date(), message: undefined, error: err });
+    console.error("Uncaught exception", err);
+    this.logMessages.push({ level: Level.error, datetime: new Date(), message: "Uncaught exception", error: err });
   }
 
 }
