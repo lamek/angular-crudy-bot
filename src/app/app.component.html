@@ -48,25 +48,14 @@
     </div>
   </div>
 
-
-  @if(gemini.lastResponse) {
-  <div class="section">
-    <div class="row">
-      <div class="label">Last response</div>
-      <code class="last-response">{{gemini.lastResponse}}</code>
-    </div>
-  </div>
-  }
-
-
 </form>
 
-@if(database.tables.length) {
-  <div class="section">
+<div class="section">
   <div class="row">
     <div class="label">Database schema</div>
   </div>
 
+  @if(database.tables.length) {
   <div class="tables">
     @for (table of database.tables; track $index) {
     <table class="table">
@@ -86,10 +75,23 @@
         }
       </tbody>
     </table>
-    <!-- <pre>{{table|json}}</pre> -->
     }
   </div>
+  } @else {
+  <div class="help">None.</div>
+  }
+</div>
 
+
+@if(gemini.lastResponse) {
+<div class="section">
+  <div class="row">
+    <div class="label">Last response</div>
+  </div>
+
+  <div class="row">
+    <code class="last-response">{{gemini.lastResponse}}</code>
+  </div>
 </div>
 }
 

@@ -138,7 +138,7 @@ export class GeminiService {
           this.log.info("Received function call response:", fc);
           const success = this.database.callFunction(fc);
           this.log.info(fc.name + "(…):", success ? "success" : "FAILED");
-          this.lastResponse = "Function call:\n" + JSON.stringify(fc);
+          this.lastResponse = "Function call:\n" + JSON.stringify(fc, null, 2);
         });
       } else if (response.text()) {
         this.log.info("Received text response:", response.text());
