@@ -14,42 +14,58 @@ export class GeminiService {
   ) { }
 
   async generateResponse(apiKey: string, prompt: string) {
-    const tableColumnProperties: { [k: string]: FunctionDeclarationSchemaProperty } = {
-      columnName: {
-        type: FunctionDeclarationSchemaType.STRING,
-        nullable: false,
-        description:
-          "Column name. Column names should be lowercase, and use snake_case.",
-      },
-      columnType: {
-        type: FunctionDeclarationSchemaType.STRING,
-        nullable: false,
-        enum: [...ColumnTypeValues],
-        description:
-          "Column type. Specifies the type of data that can be stored in this column.",
-      },
+
+    const tableNameSchema: FunctionDeclarationSchemaProperty = {
+      type: FunctionDeclarationSchemaType.STRING,
+      nullable: false,
+      description:
+        "Table name. Table names should be lowercase, and use snake_case.",
     };
 
-    const tableColumnSchema: FunctionDeclarationSchema = {
+    const columnNameSchema: FunctionDeclarationSchemaProperty = {
+      type: FunctionDeclarationSchemaType.STRING,
+      nullable: false,
+      description:
+        "Column name. Column names should be lowercase, and use snake_case.",
+    };
+
+    const columnTypeSchema: FunctionDeclarationSchemaProperty = {
+      type: FunctionDeclarationSchemaType.STRING,
+      nullable: false,
+      enum: [...ColumnTypeValues],
+      description:
+        "Column type. Specifies the type of data that can be stored in this column.",
+    };
+
+    const tableColumnProperties: { [k: string]: FunctionDeclarationSchemaProperty } = {
+      columnName: columnNameSchema,
+      columnType: columnTypeSchema,
+    };
+
+    const columnSchema: FunctionDeclarationSchema = {
       type: FunctionDeclarationSchemaType.OBJECT,
       description: "Table column. Specifies the properties of a table column.",
       properties: tableColumnProperties,
       required: ["columnName, columnType"],
     };
 
-    const tableProperties: { [k: string]: FunctionDeclarationSchemaProperty } = {
-      tableName: {
-        type: FunctionDeclarationSchemaType.STRING,
-        nullable: false,
-        description:
-          "Table name. Table names should be lowercase, and use snake_case.",
-      },
-      columns: {
-        type: FunctionDeclarationSchemaType.ARRAY,
-        nullable: false,
-        description: "Array of table columns definitions.",
-        items: tableColumnSchema,
-      },
+    const columnsSchema: FunctionDeclarationSchemaProperty = {
+      type: FunctionDeclarationSchemaType.ARRAY,
+      nullable: false,
+      description: "Array of table columns definitions.",
+      items: columnSchema,
+    };
+
+    const createTableSchema: { [k: string]: FunctionDeclarationSchemaProperty } = {
+      tableName: tableNameSchema,
+      columns: columnsSchema,
+    };
+
+    const aterTableSchema: { [k: string]: FunctionDeclarationSchemaProperty } = {
+      tableName: tableNameSchema,
+      addColumns: columnsSchema,
+      removeColumns: columnsSchema,
+      alterColumns: columnsSchema,
     };
 
     const createTableFunctionDeclaration: FunctionDeclaration = {
@@ -57,21 +73,36 @@ export class GeminiService {
       parameters: {
         type: FunctionDeclarationSchemaType.OBJECT,
         description: "Create database table.",
-        properties: tableProperties,
+        properties: createTableSchema,
         required: ["tableName", "columns"],
+      },
+    };
+
+    const alterTableFunctionDeclaration: FunctionDeclaration = {
+      name: "alterTable",
+      parameters: {
+        type: FunctionDeclarationSchemaType.OBJECT,
+        description: "Alter database table. Modifies column definitions",
+        properties: aterTableSchema,
+        required: ["tableName"],
       },
     };
 
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest" });
 
-    model.tools = [{ functionDeclarations: [createTableFunctionDeclaration] }];
+    model.tools = [{
+      functionDeclarations: [
+        createTableFunctionDeclaration,
+        alterTableFunctionDeclaration,
+      ]
+    }];
 
     model.toolConfig = {
       functionCallingConfig: {
         // Require function calling response.
         // mode: FunctionCallingMode.ANY,
-        // allowedFunctionNames: ["createTable"],
+        // allowedFunctionNames: ["createTable", "alterTable"],
       }
     };
 
@@ -80,12 +111,20 @@ export class GeminiService {
       parts: [{
         text: "You are 'CRUDy bot', an AI database agent." +
           " Users write basic CRUD (Create, Read, Update, Delete) operations in plain text." +
-          " For each such statement, you determine a suitable database table structure." +
-          " You respond with the a function call that would create that table strucutre."
+          " For each such statement, you determine a suitable database table structure," +
+          " taking into account the database tables that have already been created." +
+          " You respond with the a function call that creates a new table if needed," +
+          " or updates an existing tables. When updating an existing table, only remove" +
+          " columns or update existing ones if explicitly asked to do so. Otherwise, you" +
+          " should only add new columns to existing tables, or create new tables as necessary."
       }],
     };
 
+    prompt = prompt + "\nThe current data model is:\n" +
+      JSON.stringify(this.database.tables)
+    this.log.info("Sending", JSON.stringify(prompt));
     const result = await model.generateContent(prompt);
+
     const response = await result.response;
     const calls = response.functionCalls();
     if (calls) {

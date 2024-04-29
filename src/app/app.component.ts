@@ -40,8 +40,6 @@ export class AppComponent {
       return false;
     }
 
-    this.log.info("Sending", prompt);
-
     // async call.
     this.generateResponse(prompt);
 
