@@ -1,4 +1,4 @@
-import { Component, Injectable, InjectionToken } from '@angular/core';
+import { Component, ElementRef, viewChild } from '@angular/core';
 import { LogService } from '../log.service';
 
 @Component({
@@ -7,11 +7,18 @@ import { LogService } from '../log.service';
   styleUrl: './div-console.component.css'
 })
 export class DivConsoleComponent {
-  constructor(
-    public errService: LogService
-  ) {  }
 
+  protected scrollAnchor = viewChild.required<ElementRef<HTMLDivElement>>('scrollAnchor');
+
+  constructor(
+    public log: LogService
+  ) { }
+
+  scrollToEnd() {
+    this.scrollAnchor().nativeElement.scrollIntoView();
+  }
+  
   clear() {
-    this.errService.logMessages = [];
+    this.log.logMessages = [];
   }
 }

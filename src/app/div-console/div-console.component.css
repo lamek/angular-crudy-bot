@@ -4,7 +4,7 @@
     border: 1px solid #ff000044;
 }
 
-.controls {
+.banner {
     display: flex;
     justify-content: space-between;
     background-color: #00000011;
@@ -12,8 +12,12 @@
     margin: 0 0 8px 0;
 }
 
+.controls * + * {
+    margin-left: 8px;
+}
+
 .container {
-    max-height: 400px;
+    height: 400px;
     overflow: scroll;
 }
 
