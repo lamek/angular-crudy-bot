@@ -113,7 +113,7 @@ export class GeminiService {
     model.systemInstruction = {
       role: "user",
       parts: [{
-        text: "You are 'CRUDy bot', an AI database agent." +
+        text: "You are 'CRUD bot', an AI database agent." +
           " Users write basic CRUD (Create, Read, Update, Delete) operations in plain text." +
           " For each such statement, you determine a suitable database table structure," +
           " taking into account the database tables that have already been created." +

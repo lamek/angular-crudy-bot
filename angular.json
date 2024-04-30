@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-crudy-bot": {
+    "angular-crud-bot-sample": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -23,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/angular-crudy-bot",
+            "outputPath": "dist/angular-crud-bot-sample",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -67,10 +67,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular-crudy-bot:build:production"
+              "buildTarget": "angular-crud-bot-sample:build:production"
             },
             "development": {
-              "buildTarget": "angular-crudy-bot:build:development"
+              "buildTarget": "angular-crud-bot-sample:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -78,7 +78,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "angular-crudy-bot:build"
+            "buildTarget": "angular-crud-bot-sample:build"
           }
         },
         "test": {
