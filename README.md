@@ -1,9 +1,8 @@
-# Angular CRUD bot sample
+# Angular database schema bot sample
 
 Developer sample written in Angular, demonstrating how to use Function Calling
 in the Gemini API to collaboratively and iteratively create a database schema
-by specifying CRUD (Create Read Update Delete) operations in human readable
-form.
+using natural language prompt.
 
 This project was initially generated with
 [Angular CLI](https://github.com/angular/angular-cli) version 17.0.5.
