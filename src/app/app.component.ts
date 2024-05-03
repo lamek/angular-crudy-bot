@@ -34,7 +34,7 @@ export class AppComponent {
     "Remember anniversary for April Fools day",
   ];
 
-  useSystemInstruction = false;
+  useSystemInstruction = true;
 
   systemInstruction = `You are an AI database agent.
 
