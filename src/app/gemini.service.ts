@@ -17,6 +17,22 @@ import { FunctionDeclaration, FunctionDeclarationSchema, FunctionDeclarationSche
 import { LogService } from "./log.service";
 import { ColumnTypeValues, DatabaseService } from "./database.service";
 
+// export enum ResponseType {
+//   none = "None",
+//   waiting = "Waiting for response…",
+//   unknown = "Unknown response",
+//   functionCall = "Function Call response",
+//   text = "Text response",
+//   error = "Error",
+// }
+
+type ResponseType = "none" | "waiting" | "unknown" | "functionCall" | "text" | "error";
+
+type Response = {
+  type: ResponseType,
+  response?: string,
+};
+
 @Injectable({
   providedIn: "root"
 })
@@ -28,10 +44,10 @@ export class GeminiService {
   ) { }
 
   // Most recent response.
-  public lastResponse = "";
+  public lastResponse: Response = { type: "none" };
 
   async generateResponse(apiKey: string, prompt: string) {
-    this.lastResponse = "";
+    this.lastResponse = { type: "waiting" };
 
     const tableNameSchema: FunctionDeclarationSchemaProperty = {
       type: FunctionDeclarationSchemaType.STRING,
@@ -152,16 +168,28 @@ export class GeminiService {
           this.log.info("Received function call response:", fc);
           const success = this.database.callFunction(fc);
           this.log.info(fc.name + "(…):", success ? "success" : "FAILED");
-          this.lastResponse = "Function call:\n" + JSON.stringify(fc, null, 2);
+          this.lastResponse = {
+            type: "functionCall",
+            response: JSON.stringify(fc, null, 2),
+          };
         });
       } else if (response.text()) {
         this.log.info("Received text response:", response.text());
-        this.lastResponse = response.text();
+        this.lastResponse = {
+          type: "text",
+          response: response.text(),
+        };
       } else {
-        this.lastResponse = "Unknown response: " + JSON.stringify(response);
+        this.lastResponse = {
+          type: "unknown",
+          response: JSON.stringify(response),
+        }
       }
     } catch (e) {
-      this.lastResponse = '' + e;
+      this.lastResponse = {
+        type: "error",
+        response: '' + e,
+      }
       // Rethrow.
       throw e;
     }

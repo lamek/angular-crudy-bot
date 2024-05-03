@@ -1,5 +1,5 @@
 form {
-display: flex;
+    display: flex;
     flex-direction: column;
     align-items: start;
 }
@@ -74,16 +74,35 @@ table td {
     margin-top: 24px;
 }
 
-label, .label {
+label,
+.label {
     font-weight: bold;
 }
 
-.status.ready {
-    color: green;
+.last-response-type {
+    padding: 4px 8px;
+    border-radius: 3px;
+    background-color: #ddd;
 }
 
-.status.waiting {
-    color: orange;
+.last-response-type.waiting {
+    background-color: orange;
+}
+
+.last-response-type.unknown {
+    background-color: pink;
+}
+
+.last-response-type.functionCall {
+    background-color: #7c7;
+}
+
+.last-response-type.text {
+    background-color: #7af;
+}
+
+.last-response-type.error {
+    background-color: red;
 }
 
 .last-response {

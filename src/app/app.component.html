@@ -41,13 +41,6 @@
   </div>
 
 
-  <div class="section">
-    <div class="row">
-      <div class="label">Status</div>
-      <div class="status" [class]="waiting ? 'waiting' : 'ready'">@if(waiting){Waiting for response…}@else{Ready.}</div>
-    </div>
-  </div>
-
 </form>
 
 <div class="section">
@@ -90,7 +83,19 @@
   </div>
 
   <div class="row">
-    <code class="last-response">{{gemini.lastResponse}}</code>
+    <code class="last-response-type" [class]="gemini.lastResponse.type">
+      @switch (gemini.lastResponse.type) {
+        @case ("none") {None}
+        @case ("waiting") {Waiting for response…}
+        @case ("unknown") {Unknown response}
+        @case ("functionCall") {Function Call response}
+        @case ("text") {Text response}
+        @case ("error") {Error}
+      }
+    </code>
+  </div>
+  <div class="row">
+    <code class="last-response">{{gemini.lastResponse.response}}</code>
   </div>
 </div>
 }
