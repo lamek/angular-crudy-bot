@@ -17,14 +17,23 @@ import { FunctionDeclaration, FunctionDeclarationSchema, FunctionDeclarationSche
 import { LogService } from "./log.service";
 import { ColumnTypeValues, DatabaseService } from "./database.service";
 
-// export enum ResponseType {
-//   none = "None",
-//   waiting = "Waiting for response…",
-//   unknown = "Unknown response",
-//   functionCall = "Function Call response",
-//   text = "Text response",
-//   error = "Error",
-// }
+const systemInstruction = `You are an AI database agent.
+
+1. Users describe what data they would like to store in plain language.
+
+2. You translate these descriptions into suitable database scehma.
+   - Consider the tables, columns and data types that would be appropriate.
+   - Expand the set of obvious columns to be added to include fields likely
+     to exist in production databases.
+
+3. Compare the current database schema with the new schema.
+   - Review existing tables and columns.
+   - Ensure existing columns data types are appropriate in the new scehma.
+   - Determine which tables and columns are missing.
+   
+4. Respond with function calls to modify the schema as necessary.
+   - Only propose deleting columns if the user explicitly asks you to.
+`;
 
 type ResponseType = "none" | "waiting" | "unknown" | "functionCall" | "text" | "error";
 
@@ -143,14 +152,7 @@ export class GeminiService {
     model.systemInstruction = {
       role: "user",
       parts: [{
-        text: "You are 'CRUD bot', an AI database agent." +
-          " Users write basic CRUD (Create, Read, Update, Delete) operations in plain text." +
-          " For each such statement, you determine a suitable database table structure," +
-          " taking into account the database tables that have already been created." +
-          " You respond with the a function call that creates a new table if needed," +
-          " or updates an existing tables. When updating an existing table, only remove" +
-          " columns or update existing ones if explicitly asked to do so. Otherwise, you" +
-          " should only add new columns to existing tables, or create new tables as necessary."
+        text: systemInstruction,
       }],
     };
 
