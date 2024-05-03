@@ -17,24 +17,6 @@ import { FunctionDeclaration, FunctionDeclarationSchema, FunctionDeclarationSche
 import { LogService } from "./log.service";
 import { ColumnTypeValues, DatabaseService } from "./database.service";
 
-const systemInstruction = `You are an AI database agent.
-
-1. Users describe what data they would like to store in plain language.
-
-2. You translate these descriptions into suitable database scehma.
-   - Consider the tables, columns and data types that would be appropriate.
-   - Expand the set of obvious columns to be added to include fields likely
-     to exist in production databases.
-
-3. Compare the current database schema with the new schema.
-   - Review existing tables and columns.
-   - Ensure existing columns data types are appropriate in the new scehma.
-   - Determine which tables and columns are missing.
-   
-4. Respond with function calls to modify the schema as necessary.
-   - Only propose deleting columns if the user explicitly asks you to.
-`;
-
 type ResponseType = "none" | "waiting" | "unknown" | "functionCall" | "text" | "error";
 
 type Response = {
@@ -55,7 +37,7 @@ export class GeminiService {
   // Most recent response.
   public lastResponse: Response = { type: "none" };
 
-  async generateResponse(apiKey: string, prompt: string) {
+  async generateResponse(apiKey: string, prompt: string, systemInstruction?: string) {
     this.lastResponse = { type: "waiting" };
 
     const tableNameSchema: FunctionDeclarationSchemaProperty = {
@@ -149,12 +131,12 @@ export class GeminiService {
       }
     };
 
-    model.systemInstruction = {
-      role: "user",
-      parts: [{
-        text: systemInstruction,
-      }],
-    };
+    if (systemInstruction) {
+      model.systemInstruction = {
+        role: "user",
+        parts: [{ text: systemInstruction }],
+      };
+    }
 
     prompt = prompt + "\nThe current data model is:\n" +
       JSON.stringify(this.database.tables);

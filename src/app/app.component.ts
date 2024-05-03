@@ -34,6 +34,26 @@ export class AppComponent {
     "Remember anniversary for April Fools day",
   ];
 
+  useSystemInstruction = false;
+
+  systemInstruction = `You are an AI database agent.
+
+  1. Users describe what data they would like to store in plain language.
+  
+  2. You translate these descriptions into suitable database scehma.
+     - Consider the tables, columns and data types that would be appropriate.
+     - Expand the set of obvious columns to be added to include fields likely
+       to exist in production databases.
+  
+  3. Compare the current database schema with the new schema.
+     - Review existing tables and columns.
+     - Ensure existing columns data types are appropriate in the new scehma.
+     - Determine which tables and columns are missing.
+     
+  4. Respond with function calls to modify the schema as necessary.
+     - Only propose deleting columns if the user explicitly asks you to.
+  `;
+
   constructor(
     private log: LogService,
     protected gemini: GeminiService,
@@ -70,7 +90,7 @@ export class AppComponent {
 
     this.waiting = true;
     try {
-      await this.gemini.generateResponse(apiKey, prompt);
+      await this.gemini.generateResponse(apiKey, prompt, this.useSystemInstruction ? this.systemInstruction : undefined);
     } catch (e) {
       this.log.catch(e);
     } finally {

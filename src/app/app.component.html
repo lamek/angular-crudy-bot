@@ -1,8 +1,9 @@
 <h1>Angular database schema bot sample</h1>
 
+<div class="container">
 
+  <!-- ---------------------------------------------------------------------- -->
 
-<form (submit)="send(prompt.value)">
   <div class="section">
     <div class="row">
       <div class="help">Visit <a href="aistudio.google.com">Google AI Studio</a>, and click "Get API key".</div>
@@ -15,6 +16,21 @@
     </div>
   </div>
 
+  <!-- ---------------------------------------------------------------------- -->
+
+  <div class="section">
+    <div class="row">
+      <input type="checkbox" [checked]="useSystemInstruction" (change)="useSystemInstruction = !useSystemInstruction">
+      <label for="prompt">Use system instruction</label>
+    </div>
+
+    <div class="row">
+      <textarea [hidden]="!useSystemInstruction">{{systemInstruction}}</textarea>
+    </div>
+  </div>
+
+  <!-- ---------------------------------------------------------------------- -->
+
   <div class="section">
     <div class="row">
       <label for="prompt">Your prompt</label>
@@ -26,6 +42,8 @@
       <button type="submit" class="button" [disabled]="waiting" (click)="send(prompt.value)">Send</button>
     </div>
   </div>
+
+  <!-- ---------------------------------------------------------------------- -->
 
   <div class="section">
     <div class="row">
@@ -40,50 +58,50 @@
     }
   </div>
 
+  <!-- ---------------------------------------------------------------------- -->
 
-</form>
+  <div class="section">
+    <div class="row">
+      <div class="label">Database schema</div>
+    </div>
 
-<div class="section">
-  <div class="row">
-    <div class="label">Database schema</div>
-  </div>
-
-  @if(database.tables.length) {
-  <div class="tables">
-    @for (table of database.tables; track $index) {
-    <table class="table">
-      <caption><code class="table-name">{{table.tableName}}</code> table</caption>
-      <thead>
-        <tr>
-          <th class="column-name">Column name</th>
-          <th class="column-type">Column type</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (column of table.columns; track $index) {
-        <tr>
-          <td class="column-name code">{{column.columnName}}</td>
-          <td class="column-type code">{{column.columnType}}</td>
-        </tr>
-        }
-      </tbody>
-    </table>
+    @if(database.tables.length) {
+    <div class="tables">
+      @for (table of database.tables; track $index) {
+      <table class="table">
+        <caption><code class="table-name">{{table.tableName}}</code> table</caption>
+        <thead>
+          <tr>
+            <th class="column-name">Column name</th>
+            <th class="column-type">Column type</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (column of table.columns; track $index) {
+          <tr>
+            <td class="column-name code">{{column.columnName}}</td>
+            <td class="column-type code">{{column.columnType}}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+      }
+    </div>
+    } @else {
+    <div class="help">None.</div>
     }
   </div>
-  } @else {
-  <div class="help">None.</div>
-  }
-</div>
 
+  <!-- ---------------------------------------------------------------------- -->
 
-@if(gemini.lastResponse) {
-<div class="section">
-  <div class="row">
-    <div class="label">Last response</div>
-  </div>
+  @if(gemini.lastResponse) {
+  <div class="section">
+    <div class="row">
+      <div class="label">Last response</div>
+    </div>
 
-  <div class="row">
-    <code class="last-response-type" [class]="gemini.lastResponse.type">
+    <div class="row">
+      <code class="last-response-type" [class]="gemini.lastResponse.type">
       @switch (gemini.lastResponse.type) {
         @case ("none") {None}
         @case ("waiting") {Waiting for response…}
@@ -93,13 +111,17 @@
         @case ("error") {Error}
       }
     </code>
+    </div>
+    <div class="row">
+      <code class="last-response">{{gemini.lastResponse.response}}</code>
+    </div>
   </div>
-  <div class="row">
-    <code class="last-response">{{gemini.lastResponse.response}}</code>
-  </div>
-</div>
-}
+  }
 
-<br/>
-<br/>
+  <!-- ---------------------------------------------------------------------- -->
+
+</div>
+
+<br />
+<br />
 <app-div-console />
