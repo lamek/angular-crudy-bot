@@ -6,12 +6,15 @@
 
   <div class="section">
     <div class="row">
-      <div class="help">Visit <a href="aistudio.google.com">Google AI Studio</a>, and click "Get API key".</div>
+      <label for="apiKey">API Key</label>
+    </div>
+
+    <div class="row help">
+      <div>Visit <a href="aistudio.google.com">Google AI Studio</a>, and click "Get API key".</div>
     </div>
 
     <div class="row">
-      <label for="apiKey">API Key</label>
-      <input id="apiKey" placeholder="Gemini API key" class="api-key" #apiKey required size="40"
+      <input id="apiKey" placeholder="Gemini API key" class="code" #apiKey required size="40"
         value="">
     </div>
   </div>
@@ -34,6 +37,10 @@
   <div class="section">
     <div class="row">
       <label for="prompt">Your prompt</label>
+    </div>
+
+    <div class="row help">
+      Describe the type of data you would like to store in a database.
     </div>
 
     <div class="row">

@@ -11,8 +11,7 @@
 }
 
 code,
-.code,
-.api-key {
+.code {
     font-family: monospace;
 }
 
@@ -23,10 +22,6 @@ code,
 
 .row+.row {
     margin: 8px 0 0 0;
-}
-
-.row *+* {
-    margin: 0 0 0 8px;
 }
 
 .tables {
@@ -70,7 +65,7 @@ table td {
 }
 
 .help {
-    opacity: 0.5;
+    color: #0ba00b;
 }
 
 label,
@@ -100,7 +95,8 @@ label,
     background-color: #7af;
 }
 
-.last-response-type.error, .last-response-type.invalidFunctionCall {
+.last-response-type.error,
+.last-response-type.invalidFunctionCall {
     background-color: #f44;
 }
 
