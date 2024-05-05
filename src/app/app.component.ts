@@ -45,10 +45,10 @@ export class AppComponent implements OnInit {
      - Determine whether any tables and/or columns are missing.
      - Identify which columns need to moved to different tables.
      
-  4. Respond with function calls to update the schema.
-     - Respond with a complete set of function calls to apply the updates.
-     - Create any missing tables and columns.
-     - When moving columns, also delete the columns in the source table.
+  4. Respond with mutliple function calls to fully update the schema.
+     - Create all missing tables.
+     - Add all missing columns.
+     - Delete columns that have been moved to another table.
   `;
 
   constructor(
