@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
      - Identify which columns need to moved to different tables.
      
   4. Respond with function calls to update the database schema.
-     - Repond with a complete set of function calls to apply the updates.
+     - Respond with a complete set of function calls to apply the updates.
      - Create any missing tables and columns.
      - When moving columns, also delete the columns in the source table.
   `;

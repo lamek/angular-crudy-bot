@@ -17,7 +17,7 @@ import { FunctionDeclaration, FunctionDeclarationSchema, FunctionDeclarationSche
 import { LogService } from "./log.service";
 import { ColumnTypeValues, DatabaseService } from "./database.service";
 
-type ResponseType = "none" | "waiting" | "unknown" | "functionCall" | "invalidFunctionCall" | "text" | "error";
+type ResponseType = "none" | "waiting" | "unknown" | "functionCalls" | "invalidFunctionCalls" | "text" | "error";
 
 type Response = {
   type: ResponseType,
@@ -33,9 +33,9 @@ export class GeminiService {
     private log: LogService,
     private database: DatabaseService,
   ) { }
-  
+
   model!: GenerativeModel;
-  
+
   systemInstruction = "";
 
   // Most recent response.
@@ -158,23 +158,20 @@ export class GeminiService {
       const calls = result.response.functionCalls();
       if (calls) {
         this.log.info("Received", calls.length, "function calls.");
-        calls.forEach((fc, i) => {
+        const success = calls.every((fc, i) => {
           this.log.info("Received function call response:", fc);
           const err = this.database.callFunction(fc);
           if (err) {
             this.log.error("Error calling function: " + fc.name, err);
-            this.lastResponse = {
-              type: "invalidFunctionCall",
-              response: JSON.stringify(fc, null, 2),
-            };
-          } else {
-            this.log.info("Successfully called function " + fc.name);
-            this.lastResponse = {
-              type: "functionCall",
-              response: JSON.stringify(fc, null, 2),
-            };
+            return false;
           }
+          this.log.info("Successfully called function " + fc.name);
+          return true;
         });
+        this.lastResponse = {
+          type: success ? "functionCalls" : "invalidFunctionCalls",
+          response: JSON.stringify(calls, null, 2),
+        };
       } else if (result.response.text()) {
         this.log.info("Received text response:", result.response.text());
         this.lastResponse = {

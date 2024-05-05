@@ -87,7 +87,7 @@ label,
     background-color: pink;
 }
 
-.last-response-type.functionCall {
+.last-response-type.functionCalls {
     background-color: #7c7;
 }
 
@@ -96,7 +96,7 @@ label,
 }
 
 .last-response-type.error,
-.last-response-type.invalidFunctionCall {
+.last-response-type.invalidFunctionCalls {
     background-color: #f44;
 }
 

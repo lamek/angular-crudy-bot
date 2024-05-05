@@ -114,9 +114,9 @@
       @switch (gemini.lastResponse.type) {
         @case ("none") {None}
         @case ("waiting") {Waiting for response…}
-        @case ("unknown") {Unknown response}
-        @case ("functionCall") {Function Call response}
-        @case ("invalidFunctionCall") {Invalid Function Call response}
+        @case ("unknown") {Unknown response type}
+        @case ("functionCalls") {Function Calls}
+        @case ("invalidFunctionCalls") {Function Calls with one or more unknown functions}
         @case ("text") {Text response}
         @case ("error") {Error}
         @default { {{gemini.lastResponse.type}} }
