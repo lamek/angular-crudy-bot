@@ -14,11 +14,14 @@
 
 import { Component, ElementRef, viewChild } from '@angular/core';
 import { LogService } from '../log.service';
+import { UpperCasePipe, DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-div-console',
-  templateUrl: './div-console.component.html',
-  styleUrl: './div-console.component.css'
+    selector: 'app-div-console',
+    templateUrl: './div-console.component.html',
+    styleUrl: './div-console.component.css',
+    standalone: true,
+    imports: [UpperCasePipe, DatePipe],
 })
 export class DivConsoleComponent {
 

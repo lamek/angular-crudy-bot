@@ -24,11 +24,11 @@ import { DbtableComponent } from './dbtable/dbtable.component';
 @NgModule({
   declarations: [
     AppComponent,
-    DivConsoleComponent,
-    DbtableComponent
   ],
   imports: [
     BrowserModule,
+    DivConsoleComponent,
+    DbtableComponent,
     AppRoutingModule
   ],
   providers: [{ provide: ErrorHandler, useClass: ErrorHandlerModule }],
