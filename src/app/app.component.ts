@@ -101,12 +101,6 @@ export class AppComponent implements OnInit {
   }
 
   async generateResponse(prompt: string) {
-    const apiKey = this.apiKey().nativeElement.value;
-    if (!apiKey) {
-      this.log.error('API Key must be provided');
-      return;
-    }
-
     this.waiting = true;
     try {
       await this.gemini.generateResponse(prompt);

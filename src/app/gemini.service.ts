@@ -51,6 +51,14 @@ export class GeminiService {
   }
 
   async generateResponse(prompt: string) {
+    if (!this.model) {
+      this.lastResponse = {
+        type: "error",
+        response: 'API Key must be provided.',
+      };
+      return;
+    }
+
     this.lastResponse = { type: "waiting" };
 
     const tableNameSchema: FunctionDeclarationSchemaProperty = {
@@ -152,7 +160,6 @@ export class GeminiService {
       JSON.stringify(this.database.tables);
     this.log.info("Sending", JSON.stringify(prompt));
     try {
-
       const result = await this.model.generateContent(prompt);
 
       const calls = result.response.functionCalls();
