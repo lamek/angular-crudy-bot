@@ -47,7 +47,7 @@ export class AppComponent implements OnInit {
      
   4. Respond with mutliple function calls to fully update the schema.
      - Create all missing tables.
-     - Add all missing columns.
+     - Alter existing tables to add missing columns.
      - Delete columns that have been moved to another table.
   `;
 
