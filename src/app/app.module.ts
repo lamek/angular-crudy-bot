@@ -15,23 +15,24 @@
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ErrorHandlerModule } from './error-handler/error-handler.module';
-import { DivConsoleComponent } from './div-console/div-console.component';
 import { DbtableComponent } from './dbtable/dbtable.component';
+import { DivConsoleComponent } from './div-console/div-console.component';
+import { ErrorHandlerModule } from './error-handler/error-handler.module';
+import { ModelConfigComponent } from './model-config/model-config.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     DivConsoleComponent,
     DbtableComponent,
-    AppRoutingModule
+    ModelConfigComponent,
   ],
-  providers: [{ provide: ErrorHandler, useClass: ErrorHandlerModule }],
-  bootstrap: [AppComponent]
+  providers: [{ provide: ErrorHandler, useClass: ErrorHandlerModule }, provideAnimationsAsync()],
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
