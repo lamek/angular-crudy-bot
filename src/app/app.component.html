@@ -57,21 +57,6 @@
 
   <div class="section">
     <div class="row">
-      <div class="label">Sample prompts to try</div>
-    </div>
-
-    @for (p of samplePrompts; track $index) {
-    <div class="row">
-      <input [id]="'prompt' + $index" class="prompt" #sampleprompt type="text" [value]="p">
-      <button type="submit" class="button" [disabled]="waiting" (click)="send(sampleprompt.value)">Send</button>
-    </div>
-    }
-  </div>
-
-  <!-- ---------------------------------------------------------------------- -->
-
-  <div class="section">
-    <div class="row">
       <div class="label">Database schema</div>
     </div>
 

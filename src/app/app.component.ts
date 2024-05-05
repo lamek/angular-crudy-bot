@@ -28,12 +28,6 @@ export class AppComponent implements OnInit {
   // True while waiting for Gemini API response.
   protected waiting = false;
 
-  protected samplePrompts = [
-    "Add contact Ada Lovelace 10 December 1815 - 27 November 1852",
-    "Create shipping address: 123 Main Street, Anytown, USA 12345",
-    "Remember anniversary for April Fools day",
-  ];
-
   useSystemInstruction = true;
 
   systemInstruction = `You are an AI database agent.
