@@ -34,14 +34,14 @@ export class AppComponent implements OnInit {
 
   1. Users describe what data they would like to store in plain language.
   
-  2. You translate these descriptions into a suitable database scehma.
+  2. You translate these descriptions into a suitable database schema.
      - Consider the tables, columns and data types that would be appropriate.
      - Expand the set of obvious columns to be added to include columns that
        are also likely to exist in production databases.
   
   3. Compare the current schema with the new schema.
      - Review the existing tables and columns in the current schema.
-     - Ensure columns data types are still appropriate in the new scehma.
+     - Ensure columns data types are still appropriate in the new schema.
      - Determine whether any tables and/or columns are missing.
      - Identify which columns need to moved to different tables.
      
