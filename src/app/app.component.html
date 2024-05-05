@@ -15,7 +15,7 @@
 
     <div class="row">
       <input id="apiKey" placeholder="Gemini API key" class="code" #apiKey required size="40"
-        value="">
+        (change)="setApiKey(apiKey.value)" value="">
     </div>
   </div>
 
@@ -23,12 +23,14 @@
 
   <div class="section">
     <div class="row">
-      <input type="checkbox" [checked]="useSystemInstruction" (change)="useSystemInstruction = !useSystemInstruction">
+      <input type="checkbox" [checked]="useSystemInstruction" #useSystemInstructionInput
+        (change)="useSystemInstruction = !useSystemInstruction; setSystemInstruction(useSystemInstructionInput.checked, systemInstructionInput.value)">
       <label for="prompt">Use system instruction</label>
     </div>
 
     <div class="row">
-      <textarea [hidden]="!useSystemInstruction">{{systemInstruction}}</textarea>
+      <textarea (change)="setSystemInstruction(useSystemInstructionInput.checked, systemInstructionInput.value)"
+        #systemInstructionInput [hidden]="!useSystemInstruction">{{systemInstruction}}</textarea>
     </div>
   </div>
 

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { Injectable } from "@angular/core";
-import { FunctionDeclaration, FunctionDeclarationSchema, FunctionDeclarationSchemaProperty, FunctionDeclarationSchemaType, GoogleGenerativeAI } from "@google/generative-ai";
+import { FunctionDeclaration, FunctionDeclarationSchema, FunctionDeclarationSchemaProperty, FunctionDeclarationSchemaType, GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
 import { LogService } from "./log.service";
 import { ColumnTypeValues, DatabaseService } from "./database.service";
 
@@ -33,11 +33,24 @@ export class GeminiService {
     private log: LogService,
     private database: DatabaseService,
   ) { }
+  
+  model!: GenerativeModel;
+  
+  systemInstruction = "";
 
   // Most recent response.
   public lastResponse: Response = { type: "none" };
 
-  async generateResponse(apiKey: string, prompt: string, systemInstruction?: string) {
+  setSystemInstruction(systemInstruction: string) {
+    this.systemInstruction = systemInstruction;
+  }
+
+  setApiKey(apiKey: string) {
+    const genAI = new GoogleGenerativeAI(apiKey);
+    this.model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest" });
+  }
+
+  async generateResponse(prompt: string) {
     this.lastResponse = { type: "waiting" };
 
     const tableNameSchema: FunctionDeclarationSchemaProperty = {
@@ -113,17 +126,14 @@ export class GeminiService {
       },
     };
 
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest" });
-
-    model.tools = [{
+    this.model.tools = [{
       functionDeclarations: [
         createTableFunctionDeclaration,
         alterTableFunctionDeclaration,
       ]
     }];
 
-    model.toolConfig = {
+    this.model.toolConfig = {
       functionCallingConfig: {
         // Require function calling response.
         // mode: FunctionCallingMode.ANY,
@@ -131,10 +141,10 @@ export class GeminiService {
       }
     };
 
-    if (systemInstruction) {
-      model.systemInstruction = {
+    if (this.systemInstruction) {
+      this.model.systemInstruction = {
         role: "user",
-        parts: [{ text: systemInstruction }],
+        parts: [{ text: this.systemInstruction }],
       };
     }
 
@@ -143,10 +153,11 @@ export class GeminiService {
     this.log.info("Sending", JSON.stringify(prompt));
     try {
 
-      const result = await model.generateContent(prompt);
+      const result = await this.model.generateContent(prompt);
 
       const calls = result.response.functionCalls();
       if (calls) {
+        this.log.info("Received", calls.length, "function calls.");
         calls.forEach((fc, i) => {
           this.log.info("Received function call response:", fc);
           const err = this.database.callFunction(fc);

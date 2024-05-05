@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, ElementRef, viewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, viewChild } from '@angular/core';
 import { DatabaseService } from './database.service';
 import { GeminiService } from './gemini.service';
 import { LogService } from './log.service';
@@ -22,7 +22,7 @@ import { LogService } from './log.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   protected apiKey = viewChild.required<ElementRef<HTMLInputElement>>('apiKey');
 
   // True while waiting for Gemini API response.
@@ -63,6 +63,22 @@ export class AppComponent {
     protected database: DatabaseService,
   ) { }
 
+  ngOnInit(): void {
+    // Set API key if hard-coded in the HTML. 
+    const apiKey = this.apiKey().nativeElement.value;
+    if (apiKey) {
+      this.setApiKey(apiKey);
+    }
+  }
+
+  setApiKey(apiKey: string) {
+    this.gemini.setApiKey(apiKey);
+  }
+
+  setSystemInstruction(useSystemInstruction: boolean, systemInstruction: string) {
+    this.gemini.setSystemInstruction(useSystemInstruction ? systemInstruction : "");
+  }
+
   send(prompt: string) {
     if (this.waiting) {
       this.log.warn("Unable to send, still waiting for response." +
@@ -93,7 +109,7 @@ export class AppComponent {
 
     this.waiting = true;
     try {
-      await this.gemini.generateResponse(apiKey, prompt, this.useSystemInstruction ? this.systemInstruction : undefined);
+      await this.gemini.generateResponse(prompt);
     } catch (e) {
       this.log.catch(e);
     } finally {
