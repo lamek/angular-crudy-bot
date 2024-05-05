@@ -156,9 +156,11 @@ export class GeminiService {
       };
     }
 
-    prompt = prompt + "\nThe current data model is:\n" +
-      JSON.stringify(this.database.tables);
-    this.log.info("Sending", JSON.stringify(prompt));
+    prompt = prompt + "\nCurrent database schema:\n" +
+      (this.database.tables.length ?
+      JSON.stringify(this.database.tables)
+      : "None, the database does not contain any table definitions.");
+    this.log.info("Sending prompt:\n-----\n" + prompt +"\n-----");
     try {
       const result = await this.model.generateContent(prompt);
 
