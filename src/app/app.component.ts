@@ -48,10 +48,13 @@ export class AppComponent {
   3. Compare the current database schema with the new schema.
      - Review the existing tables and columns in the current schema.
      - Ensure columns data types are still appropriate in the new scehma.
-     - Determine if any tables and/or columns are missing.
+     - Determine whether any tables and/or columns are missing.
+     - Identify which columns need to moved to different tables.
      
-  4. Respond with function calls to modify the current schema as necessary.
-     - Only propose deleting columns if the user explicitly asks you to.
+  4. Respond with function calls to update the database schema.
+     - Repond with a complete set of function calls to apply the updates.
+     - Create any missing tables and columns.
+     - When moving columns, also delete the columns in the source table.
   `;
 
   constructor(
