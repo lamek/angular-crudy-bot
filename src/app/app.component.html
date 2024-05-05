@@ -15,7 +15,8 @@
 
     <div class="row">
       <input id="apiKey" placeholder="Gemini API key" class="code" #apiKey required size="40"
-        (change)="setApiKey(apiKey.value)" value="">
+        (change)="setApiKey(apiKey.value)"
+        value="">
     </div>
   </div>
 
@@ -47,7 +48,7 @@
 
     <div class="row">
       <input id="prompt" class="prompt" #prompt type="text" autofocus (keyup.enter)="send(prompt.value)"
-        placeholder="Describe data you would like to store in a database">
+        value="A customer database for an online retail store that tracks customers, orders and product inventory">
       <button type="submit" class="button" [disabled]="waiting" (click)="send(prompt.value)">Send</button>
     </div>
   </div>
