@@ -16,9 +16,9 @@ import { Component } from '@angular/core';
 
 @Component({
     selector: 'app-dbtable',
+    standalone: true,
     templateUrl: './dbtable.component.html',
     styleUrl: './dbtable.component.css',
-    standalone: true,
 })
 export class DbtableComponent {
 
