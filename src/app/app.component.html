@@ -14,9 +14,8 @@
     </div>
 
     <div class="row">
-      <input id="apiKey" placeholder="Gemini API key" class="code" #apiKey required size="40"
-        (change)="setApiKey(apiKey.value)"
-        value="">
+      <input id="apiKey" placeholder="Paste in your Gemini API key" class="code" #apiKey required size="40"
+        (change)="setApiKey(apiKey.value)" value="">
     </div>
   </div>
 
@@ -47,17 +46,20 @@
     </div>
 
     <div class="row">
-      <input id="prompt" class="prompt" #prompt type="text" autofocus (keyup.enter)="send(prompt.value)"
-        value="A customer database for an online retail store that tracks customers, orders and product inventory">
-      <button type="submit" class="button" [disabled]="waiting" (click)="send(prompt.value)">Send</button>
+      <input id="prompt" class="prompt" #prompt type="text" autofocus (keyup.enter)="send(prompt.value)" required
+        [value]="database.tables.length ? '': 'A customer database for an online retail store that tracks customers, orders and product inventory'"
+        [placeholder]="database.tables.length ? 'Try describing a change to an existing table' : 'Try: A table that tracks high scores for an online game'">
+      <button type="submit" class="button" [disabled]="waiting || !prompt.value"
+        (click)="send(prompt.value)">Send</button>
     </div>
   </div>
 
   <!-- ---------------------------------------------------------------------- -->
 
+  @if (database.tables.length) {
   <div class="section">
     <div class="row">
-      <div class="label">Database schema</div>
+      <div class="label">Current database schema</div>
     </div>
 
     @if(database.tables.length) {
@@ -86,19 +88,19 @@
     <div>None.</div>
     }
   </div>
+  }
 
   <!-- ---------------------------------------------------------------------- -->
 
-  @if(gemini.lastResponse) {
+  @if(gemini.lastResponse && gemini.lastResponse.type != "none") {
   <div class="section">
     <div class="row">
-      <div class="label">Last response</div>
+      <div class="label">Model response</div>
     </div>
 
     <div class="row">
       <code class="last-response-type" [class]="gemini.lastResponse.type">
       @switch (gemini.lastResponse.type) {
-        @case ("none") {None}
         @case ("waiting") {Waiting for response…}
         @case ("unknown") {Unknown response type}
         @case ("functionCalls") {Function Calls}
