@@ -23,6 +23,7 @@ import { LogService } from './log.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
+  protected modelName = viewChild.required<ElementRef<HTMLInputElement>>('modelName');
   protected apiKey = viewChild.required<ElementRef<HTMLInputElement>>('apiKey');
 
   // True while waiting for Gemini API response.
@@ -58,15 +59,16 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // Set API key if hard-coded in the HTML. 
-    const apiKey = this.apiKey().nativeElement.value;
-    if (apiKey) {
-      this.setApiKey(apiKey);
-    }
+    // Set initial values that are hard-coded in the HTML.
+    this.configure();
   }
 
-  setApiKey(apiKey: string) {
-    this.gemini.setApiKey(apiKey);
+  configure() {
+    const modelName = this.modelName().nativeElement.value;
+    const apiKey = this.apiKey().nativeElement.value
+    if (modelName && apiKey) {
+      this.gemini.configure(modelName, apiKey);
+    }
   }
 
   setSystemInstruction(useSystemInstruction: boolean, systemInstruction: string) {
@@ -87,7 +89,7 @@ export class AppComponent implements OnInit {
       return false;
     }
 
-    // async call.
+    // Async call.
     this.generateResponse(prompt);
 
     // Prevent form submission.

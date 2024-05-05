@@ -46,16 +46,16 @@ export class GeminiService {
     this.systemInstruction = systemInstruction;
   }
 
-  setApiKey(apiKey: string) {
+  configure(modelName: string, apiKey: string) {
     const genAI = new GoogleGenerativeAI(apiKey);
-    this.model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest" });
+    this.model = genAI.getGenerativeModel({ model: modelName });
   }
 
   async generateResponse(prompt: string) {
     if (!this.model) {
       this.lastResponse = {
         type: "error",
-        response: 'API Key must be provided.',
+        response: 'You must specify a model name and valid API Key.',
       };
       return;
     }

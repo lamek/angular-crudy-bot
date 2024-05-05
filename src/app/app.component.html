@@ -5,6 +5,20 @@
   <!-- ---------------------------------------------------------------------- -->
 
   <div class="section">
+
+    <div class="row">
+      <label for="modelName">Model</label>
+    </div>
+
+    <div class="row">
+      <input id="modelName" class="code" #modelName required size="25" (change)="configure()"
+        value="gemini-1.5-pro-latest">
+    </div>
+  </div>
+
+  <!-- ---------------------------------------------------------------------- -->
+
+  <div class="section">
     <div class="row">
       <label for="apiKey">API Key</label>
     </div>
@@ -15,7 +29,7 @@
 
     <div class="row">
       <input id="apiKey" placeholder="Paste in your Gemini API key" class="code" #apiKey required size="40"
-        (change)="setApiKey(apiKey.value)" value="">
+        (change)="configure()" value="">
     </div>
   </div>
 
@@ -49,8 +63,7 @@
       <input id="prompt" class="prompt" #prompt type="text" autofocus (keyup.enter)="send(prompt.value)" required
         [value]="database.tables.length ? '': 'A customer database for an online retail store that tracks customers, orders and product inventory'"
         [placeholder]="database.tables.length ? 'Try describing a change to an existing table' : 'Try: A table that tracks high scores for an online game'">
-      <button type="submit" class="button" [disabled]="waiting || !prompt.value"
-        (click)="send(prompt.value)">Send</button>
+      <button type="submit" class="button" [disabled]="waiting" (click)="send(prompt.value)">Send</button>
     </div>
   </div>
 
