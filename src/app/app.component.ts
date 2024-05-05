@@ -39,13 +39,13 @@ export class AppComponent implements OnInit {
      - Expand the set of obvious columns to be added to include columns that
        are also likely to exist in production databases.
   
-  3. Compare the current database schema with the new schema.
+  3. Compare the current schema with the new schema.
      - Review the existing tables and columns in the current schema.
      - Ensure columns data types are still appropriate in the new scehma.
      - Determine whether any tables and/or columns are missing.
      - Identify which columns need to moved to different tables.
      
-  4. Respond with function calls to update the database schema.
+  4. Respond with function calls to update the schema.
      - Respond with a complete set of function calls to apply the updates.
      - Create any missing tables and columns.
      - When moving columns, also delete the columns in the source table.
