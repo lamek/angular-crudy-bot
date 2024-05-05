@@ -40,17 +40,17 @@ export class AppComponent {
 
   1. Users describe what data they would like to store in plain language.
   
-  2. You translate these descriptions into suitable database scehma.
+  2. You translate these descriptions into a suitable database scehma.
      - Consider the tables, columns and data types that would be appropriate.
-     - Expand the set of obvious columns to be added to include fields likely
-       to exist in production databases.
+     - Expand the set of obvious columns to be added to include columns that
+       are also likely to exist in production databases.
   
   3. Compare the current database schema with the new schema.
-     - Review existing tables and columns.
-     - Ensure existing columns data types are appropriate in the new scehma.
-     - Determine which tables and columns are missing.
+     - Review the existing tables and columns in the current schema.
+     - Ensure columns data types are still appropriate in the new scehma.
+     - Determine if any tables and/or columns are missing.
      
-  4. Respond with function calls to modify the schema as necessary.
+  4. Respond with function calls to modify the current schema as necessary.
      - Only propose deleting columns if the user explicitly asks you to.
   `;
 
