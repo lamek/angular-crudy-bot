@@ -145,8 +145,7 @@ export class GeminiService {
 
       const result = await model.generateContent(prompt);
 
-      const response = await result.response;
-      const calls = response.functionCalls();
+      const calls = result.response.functionCalls();
       if (calls) {
         calls.forEach((fc, i) => {
           this.log.info("Received function call response:", fc);
@@ -157,16 +156,16 @@ export class GeminiService {
             response: JSON.stringify(fc, null, 2),
           };
         });
-      } else if (response.text()) {
-        this.log.info("Received text response:", response.text());
+      } else if (result.response.text()) {
+        this.log.info("Received text response:", result.response.text());
         this.lastResponse = {
           type: "text",
-          response: response.text(),
+          response: result.response.text(),
         };
       } else {
         this.lastResponse = {
           type: "unknown",
-          response: JSON.stringify(response),
+          response: JSON.stringify(result.response),
         }
       }
     } catch (e) {
