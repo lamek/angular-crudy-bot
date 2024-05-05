@@ -1,4 +1,4 @@
-# Angular database schema bot sample
+# Angular database schema sample
 
 Developer sample written in Angular, demonstrating how to use Function Calling
 in the Gemini API to collaboratively and iteratively create a database schema
