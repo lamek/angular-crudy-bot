@@ -55,17 +55,16 @@ export class DatabaseService {
 
   tables: Table[] = [];
 
-  createTable(log: LogService, table: Table): boolean {
+  createTable(log: LogService, table: Table) {
     log.info("Creating table", table);
     this.tables.push(table);
-    return true;
   }
 
   getOrMakeTable(tableName: string): Table {
     return this.tables.find(t => t.tableName == tableName) || {} as Table;
   }
 
-  alterTable(log: LogService, args: alterTableArgs): boolean {
+  alterTable(log: LogService, args: alterTableArgs) {
     log.info("Altering table", args);
     const table = this.getOrMakeTable(args.tableName);
 
@@ -100,7 +99,6 @@ export class DatabaseService {
         table.columns.push(col);
       });
     }
-    return true;
   }
 
   dbfunctions: { [functionName: string]: Function } = {
@@ -108,8 +106,16 @@ export class DatabaseService {
     alterTable: this.alterTable,
   };
 
-  callFunction(fc: FunctionCall) {
+  callFunction(fc: FunctionCall) : Error | undefined {
     const f = this.dbfunctions[fc.name];
-    return f.apply(this, [this.log, fc.args]);
+    if (!f) {
+      return Error("Model requested call to non-existant function: " + fc.name);
+    }
+    try {
+      f.apply(this, [this.log, fc.args]);
+      return undefined;
+    } catch(e) {
+      return Error("Failed to call requested funciton " + fc.name, {cause: e});
+    }
   }
 }

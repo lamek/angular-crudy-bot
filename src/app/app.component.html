@@ -107,8 +107,10 @@
         @case ("waiting") {Waiting for response…}
         @case ("unknown") {Unknown response}
         @case ("functionCall") {Function Call response}
+        @case ("invalidFunctionCall") {Invalid Function Call response}
         @case ("text") {Text response}
         @case ("error") {Error}
+        @default { {{gemini.lastResponse.type}} }
       }
     </code>
     </div>

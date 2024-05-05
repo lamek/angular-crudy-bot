@@ -100,8 +100,8 @@ label,
     background-color: #7af;
 }
 
-.last-response-type.error {
-    background-color: red;
+.last-response-type.error, .last-response-type.invalidFunctionCall {
+    background-color: #f44;
 }
 
 .last-response {

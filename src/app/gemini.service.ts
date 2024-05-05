@@ -17,7 +17,7 @@ import { FunctionDeclaration, FunctionDeclarationSchema, FunctionDeclarationSche
 import { LogService } from "./log.service";
 import { ColumnTypeValues, DatabaseService } from "./database.service";
 
-type ResponseType = "none" | "waiting" | "unknown" | "functionCall" | "text" | "error";
+type ResponseType = "none" | "waiting" | "unknown" | "functionCall" | "invalidFunctionCall" | "text" | "error";
 
 type Response = {
   type: ResponseType,
@@ -149,12 +149,20 @@ export class GeminiService {
       if (calls) {
         calls.forEach((fc, i) => {
           this.log.info("Received function call response:", fc);
-          const success = this.database.callFunction(fc);
-          this.log.info(fc.name + "(…):", success ? "success" : "FAILED");
-          this.lastResponse = {
-            type: "functionCall",
-            response: JSON.stringify(fc, null, 2),
-          };
+          const err = this.database.callFunction(fc);
+          if (err) {
+            this.log.error("Error calling function: " + fc.name, err);
+            this.lastResponse = {
+              type: "invalidFunctionCall",
+              response: JSON.stringify(fc, null, 2),
+            };
+          } else {
+            this.log.info("Successfully called function " + fc.name);
+            this.lastResponse = {
+              type: "functionCall",
+              response: JSON.stringify(fc, null, 2),
+            };
+          }
         });
       } else if (result.response.text()) {
         this.log.info("Received text response:", result.response.text());
