@@ -22,14 +22,16 @@ import { DbtableComponent } from './dbtable/dbtable.component';
 import { DivConsoleComponent } from './div-console/div-console.component';
 import { ErrorHandlerModule } from './error-handler/error-handler.module';
 import { ModelConfigComponent } from './model-config/model-config.component';
+import { DbPanelComponent } from './db-panel/db-panel.component';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    DivConsoleComponent,
+    DbPanelComponent,
     DbtableComponent,
+    DivConsoleComponent,
     ModelConfigComponent,
   ],
   providers: [{ provide: ErrorHandler, useClass: ErrorHandlerModule }, provideAnimationsAsync()],
