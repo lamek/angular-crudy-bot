@@ -13,9 +13,10 @@
 // limitations under the License.
 
 import { Injectable } from "@angular/core";
-import { FunctionDeclaration, FunctionDeclarationSchema, FunctionDeclarationSchemaProperty, FunctionDeclarationSchemaType, GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
+import { GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
+import { DatabaseService } from "./database.service";
+import { functionDeclarations } from "./gemini-function-declarations";
 import { LogService } from "./log.service";
-import { ColumnTypeValues, DatabaseService } from "./database.service";
 
 type ResponseType = "none" | "waiting" | "unknown" | "functionCalls" | "invalidFunctionCalls" | "text" | "error";
 
@@ -59,109 +60,33 @@ export class GeminiService {
       return;
     }
 
-    this.lastResponse = { type: "waiting" };
-
-    const tableNameSchema: FunctionDeclarationSchemaProperty = {
-      type: FunctionDeclarationSchemaType.STRING,
-      nullable: false,
-      description:
-        "Table name. Table names should be lowercase, and use snake_case.",
-    };
-
-    const columnNameSchema: FunctionDeclarationSchemaProperty = {
-      type: FunctionDeclarationSchemaType.STRING,
-      nullable: false,
-      description:
-        "Column name. Column names should be lowercase, and use snake_case.",
-    };
-
-    const columnTypeSchema: FunctionDeclarationSchemaProperty = {
-      type: FunctionDeclarationSchemaType.STRING,
-      nullable: false,
-      enum: [...ColumnTypeValues],
-      description:
-        "Column type. Specifies the type of data that can be stored in this column.",
-    };
-
-    const tableColumnProperties: { [k: string]: FunctionDeclarationSchemaProperty } = {
-      columnName: columnNameSchema,
-      columnType: columnTypeSchema,
-    };
-
-    const columnSchema: FunctionDeclarationSchema = {
-      type: FunctionDeclarationSchemaType.OBJECT,
-      description: "Table column. Specifies the properties of a table column.",
-      properties: tableColumnProperties,
-      required: ["columnName, columnType"],
-    };
-
-    const columnsSchema: FunctionDeclarationSchemaProperty = {
-      type: FunctionDeclarationSchemaType.ARRAY,
-      nullable: false,
-      description: "Array of table columns definitions.",
-      items: columnSchema,
-    };
-
-    const createTableSchema: { [k: string]: FunctionDeclarationSchemaProperty } = {
-      tableName: tableNameSchema,
-      columns: columnsSchema,
-    };
-
-    const aterTableSchema: { [k: string]: FunctionDeclarationSchemaProperty } = {
-      tableName: tableNameSchema,
-      addColumns: columnsSchema,
-      removeColumns: columnsSchema,
-      alterColumns: columnsSchema,
-    };
-
-    const createTableFunctionDeclaration: FunctionDeclaration = {
-      name: "createTable",
-      parameters: {
-        type: FunctionDeclarationSchemaType.OBJECT,
-        description: "Create database table.",
-        properties: createTableSchema,
-        required: ["tableName", "columns"],
-      },
-    };
-
-    const alterTableFunctionDeclaration: FunctionDeclaration = {
-      name: "alterTable",
-      parameters: {
-        type: FunctionDeclarationSchemaType.OBJECT,
-        description: "Alter database table. Modifies column definitions",
-        properties: aterTableSchema,
-        required: ["tableName"],
-      },
-    };
-
-    this.model.tools = [{
-      functionDeclarations: [
-        createTableFunctionDeclaration,
-        alterTableFunctionDeclaration,
-      ]
-    }];
-
-    this.model.toolConfig = {
-      functionCallingConfig: {
-        // Require function calling response.
-        // mode: FunctionCallingMode.ANY,
-        // allowedFunctionNames: ["createTable", "alterTable"],
-      }
-    };
-
-    if (this.systemInstruction) {
-      this.model.systemInstruction = {
-        role: "user",
-        parts: [{ text: this.systemInstruction }],
-      };
-    }
-
-    prompt = prompt + "\nCurrent database schema:\n" +
-      (this.database.tables.length ?
-      JSON.stringify(this.database.tables)
-      : "None, the database does not contain any table definitions.");
-    this.log.info("Sending prompt:\n-----\n" + prompt +"\n-----");
     try {
+      this.lastResponse = { type: "waiting" };
+
+      this.model.tools = [{
+        functionDeclarations: functionDeclarations,
+      }];
+
+      this.model.toolConfig = {
+        functionCallingConfig: {
+          // Require function calling response.
+          // mode: FunctionCallingMode.ANY,
+          // allowedFunctionNames: ["createTable", "alterTable"],
+        }
+      };
+
+      if (this.systemInstruction) {
+        this.model.systemInstruction = {
+          role: "user",
+          parts: [{ text: this.systemInstruction }],
+        };
+      }
+
+      prompt = prompt + "\nCurrent database schema:\n" +
+        (this.database.tables.length ?
+          JSON.stringify(this.database.tables)
+          : "None, the database does not contain any table definitions.");
+      this.log.info("Sending prompt:\n-----\n" + prompt + "\n-----");
       const result = await this.model.generateContent(prompt);
 
       const calls = result.response.functionCalls();
