@@ -18,11 +18,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { DbtableComponent } from './dbtable/dbtable.component';
+import { DbPanelComponent } from './db-panel/db-panel.component';
+import { DbTableComponent } from './db-table/db-table.component';
 import { DivConsoleComponent } from './div-console/div-console.component';
 import { ErrorHandlerModule } from './error-handler/error-handler.module';
 import { ModelConfigComponent } from './model-config/model-config.component';
-import { DbPanelComponent } from './db-panel/db-panel.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -30,7 +30,7 @@ import { DbPanelComponent } from './db-panel/db-panel.component';
     BrowserModule,
     AppRoutingModule,
     DbPanelComponent,
-    DbtableComponent,
+    DbTableComponent,
     DivConsoleComponent,
     ModelConfigComponent,
   ],
