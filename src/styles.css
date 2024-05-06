@@ -2,12 +2,6 @@ body {
     font-family: sans-serif;
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-}
-
 .section {
     margin-top: 24px;
     width: 100%;

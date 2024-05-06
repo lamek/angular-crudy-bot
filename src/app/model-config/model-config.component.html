@@ -1,49 +1,45 @@
-<div class="container">
+<h2>Configure your model</h2>
 
-    <h2>Configure your model</h2>
+<div class="section">
 
-    <div class="section">
-
-        <div class="row">
-            <label for="modelName">Model</label>
-        </div>
-
-        <div class="row">
-            <input id="modelName" class="code" #modelName required size="25" (change)="configure()"
-                value="gemini-1.5-pro-latest">
-        </div>
+    <div class="row">
+        <label for="modelName">Model</label>
     </div>
 
-    <!-- ---------------------------------------------------------------------- -->
+    <div class="row">
+        <input id="modelName" class="code" #modelName required size="25" (change)="configure()"
+            value="gemini-1.5-pro-latest">
+    </div>
+</div>
 
-    <div class="section">
-        <div class="row">
-            <label for="apiKey">API Key</label>
-        </div>
+<!-- ---------------------------------------------------------------------- -->
 
-        <div class="row help">
-            <div>Visit <a href="aistudio.google.com">Google AI Studio</a>, and click "Get API key".</div>
-        </div>
-
-        <div class="row">
-            <input id="apiKey" placeholder="Paste in your Gemini API key" class="code" #apiKey required size="40"
-                (change)="configure()" value="">
-        </div>
+<div class="section">
+    <div class="row">
+        <label for="apiKey">API Key</label>
     </div>
 
-    <!-- ---------------------------------------------------------------------- -->
-
-    <div class="section">
-        <div class="row">
-            <input type="checkbox" [checked]="useSystemInstruction" #useSystemInstructionInput
-                (change)="useSystemInstruction = !useSystemInstruction; setSystemInstruction(useSystemInstructionInput.checked, systemInstructionInput.value)">
-            <label for="prompt">Use system instruction</label>
-        </div>
-
-        <div class="row">
-            <textarea (change)="setSystemInstruction(useSystemInstructionInput.checked, systemInstructionInput.value)"
-                #systemInstructionInput [hidden]="!useSystemInstruction">{{systemInstruction}}</textarea>
-        </div>
+    <div class="row help">
+        <div>Visit <a href="aistudio.google.com">Google AI Studio</a>, and click "Get API key".</div>
     </div>
 
+    <div class="row">
+        <input id="apiKey" placeholder="Paste in your Gemini API key" class="code" #apiKey required size="40"
+            (change)="configure()" value="">
+    </div>
+</div>
+
+<!-- ---------------------------------------------------------------------- -->
+
+<div class="section">
+    <div class="row">
+        <input type="checkbox" [checked]="useSystemInstruction" #useSystemInstructionInput
+            (change)="useSystemInstruction = !useSystemInstruction; setSystemInstruction(useSystemInstructionInput.checked, systemInstructionInput.value)">
+        <label for="prompt">Use system instruction</label>
+    </div>
+
+    <div class="row">
+        <textarea (change)="setSystemInstruction(useSystemInstructionInput.checked, systemInstructionInput.value)"
+            #systemInstructionInput [hidden]="!useSystemInstruction">{{systemInstruction}}</textarea>
+    </div>
 </div>
