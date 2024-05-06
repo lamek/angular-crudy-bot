@@ -8,16 +8,16 @@ body {
     max-width: 45em;
 }
 
-code,
-.code {
-    font-family: monospace;
-}
-
 .row {
     display: flex;
     align-items: flex-start;
     gap: 4px;
     margin: 8px 0;
+}
+
+code,
+.code {
+    font-family: monospace;
 }
 
 .help {
