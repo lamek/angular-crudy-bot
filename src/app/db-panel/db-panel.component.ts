@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { LogService } from '../log.service';
 import { GeminiService } from '../gemini.service';
 import { DatabaseService } from '../database.service';
+import { DbSchemaComponent } from '../db-schema/db-schema.component';
 
 @Component({
   selector: 'app-db-panel',
   standalone: true,
-  imports: [],
+  imports: [DbSchemaComponent],
   templateUrl: './db-panel.component.html',
   styleUrl: './db-panel.component.css'
 })
