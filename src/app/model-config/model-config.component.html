@@ -10,6 +10,13 @@
         <input id="modelName" class="code" #modelName required size="25" (change)="configure()"
             value="gemini-1.5-pro-latest">
     </div>
+
+    <div class="row help">
+        <div>
+            See available
+            <a target="_blank" href="https://ai.google.dev/gemini-api/docs/models/gemini#model-versions">model versions</a>.
+        </div>
+    </div>
 </div>
 
 <!-- ---------------------------------------------------------------------- -->
@@ -19,13 +26,16 @@
         <label for="apiKey">API Key</label>
     </div>
 
-    <div class="row help">
-        <div>Visit <a href="aistudio.google.com">Google AI Studio</a>, and click "Get API key".</div>
-    </div>
-
     <div class="row">
         <input id="apiKey" placeholder="Paste in your Gemini API key" class="code" #apiKey required size="40"
             (change)="configure()" value="">
+    </div>
+
+    <div class="row help">
+        <div>
+            Visit
+            <a target="_blank" href="https://aistudio.google.com/">Google AI Studio</a>, and click <b>Get API key</b>.
+        </div>
     </div>
 </div>
 

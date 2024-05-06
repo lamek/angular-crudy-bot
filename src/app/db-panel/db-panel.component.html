@@ -3,14 +3,10 @@
     <label for="prompt">Your prompt</label>
   </div>
 
-  <div class="row help">
-    Describe the type of data you would like to store in your database.
-  </div>
-
   <div class="row">
     <input id="prompt" class="prompt" #prompt type="text" autofocus (keyup.enter)="send(prompt.value)" required
       [value]="database.tables.length ? '': 'A customer database for an online retail store that tracks customers, orders and product inventory'"
-      [placeholder]="database.tables.length ? 'Try describing a change to an existing table' : 'Try: A table that tracks high scores for an online game'">
+      [placeholder]="database.tables.length ? 'Try describing a change to an existing table' : 'Try: player inventory in an adventure game'">
     <button type="submit" class="button" [disabled]="waiting" (click)="send(prompt.value)">Send</button>
   </div>
 </div>

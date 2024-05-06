@@ -2,10 +2,14 @@ body {
     font-family: sans-serif;
 }
 
+input,textarea {
+    font-size: 100%;
+}
+
 .section {
     margin-top: 24px;
     width: 100%;
-    max-width: 45em;
+    max-width: 800px;
 }
 
 .row {
@@ -20,11 +24,13 @@ code,
     font-family: monospace;
 }
 
-.help {
-    color: #0ba00b;
-}
-
 label,
 .label {
     font-weight: bold;
+}
+
+.help,
+.help a {
+    color: gray;
+    font-size: 0.85rem;
 }
