@@ -4,7 +4,7 @@
   </div>
 
   <div class="row help">
-    Describe the type of data you would like to store in a database.
+    Describe the type of data you would like to store in your database.
   </div>
 
   <div class="row">
@@ -14,9 +14,3 @@
     <button type="submit" class="button" [disabled]="waiting" (click)="send(prompt.value)">Send</button>
   </div>
 </div>
-
-<!-- ---------------------------------------------------------------------- -->
-
-<app-db-schema></app-db-schema>
-
-<app-gemini-response></app-gemini-response>

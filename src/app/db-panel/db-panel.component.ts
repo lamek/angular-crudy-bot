@@ -1,14 +1,12 @@
 import { Component } from '@angular/core';
-import { LogService } from '../log.service';
-import { GeminiService } from '../gemini.service';
 import { DatabaseService } from '../database.service';
-import { DbSchemaComponent } from '../db-schema/db-schema.component';
-import { GeminiResponseComponent } from '../gemini-response/gemini-response.component';
+import { GeminiService } from '../gemini.service';
+import { LogService } from '../log.service';
 
 @Component({
   selector: 'app-db-panel',
   standalone: true,
-  imports: [DbSchemaComponent, GeminiResponseComponent],
+  imports: [],
   templateUrl: './db-panel.component.html',
   styleUrl: './db-panel.component.css'
 })

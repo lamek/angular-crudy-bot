@@ -23,15 +23,19 @@ import { DbTableComponent } from './db-table/db-table.component';
 import { DivConsoleComponent } from './div-console/div-console.component';
 import { ErrorHandlerModule } from './error-handler/error-handler.module';
 import { ModelConfigComponent } from './model-config/model-config.component';
+import { GeminiResponseComponent } from './gemini-response/gemini-response.component';
+import { DbSchemaComponent } from './db-schema/db-schema.component';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    BrowserModule,
     AppRoutingModule,
+    BrowserModule,
     DbPanelComponent,
+    DbSchemaComponent,
     DbTableComponent,
     DivConsoleComponent,
+    GeminiResponseComponent,
     ModelConfigComponent,
   ],
   providers: [{ provide: ErrorHandler, useClass: ErrorHandlerModule }, provideAnimationsAsync()],
