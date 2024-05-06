@@ -15,7 +15,7 @@ input,textarea {
     gap: 3px;
 }
 
-.row {
+.section > * {
     display: flex;
     align-items: flex-start;
     gap: 4px;

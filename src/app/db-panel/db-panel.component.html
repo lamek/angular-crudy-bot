@@ -1,9 +1,7 @@
 <div class="section">
-  <div class="row">
-    <label for="prompt">Your prompt</label>
-  </div>
+  <label for="prompt">Your prompt</label>
 
-  <div class="row">
+  <div>
     <input id="prompt" class="prompt" #prompt type="text" autofocus (keyup.enter)="send(prompt.value)" required
       [value]="database.tables.length ? '': 'A customer database for an online retail store that tracks customers, orders and product inventory'"
       [placeholder]="database.tables.length ? 'Try describing a change to an existing table' : 'Try: player inventory in an adventure game'">
