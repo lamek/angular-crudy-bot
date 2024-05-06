@@ -9,7 +9,7 @@ import { GeminiService } from '../gemini.service';
   standalone: true,
 })
 export class ModelConfigComponent implements OnInit {
-  protected modelName = viewChild.required<ElementRef<HTMLInputElement>>('modelName');
+  protected modelVersion = viewChild.required<ElementRef<HTMLInputElement>>('modelVersion');
   protected apiKey = viewChild.required<ElementRef<HTMLInputElement>>('apiKey');
 
   constructor(
@@ -46,10 +46,10 @@ export class ModelConfigComponent implements OnInit {
   }
 
   configure() {
-    const modelName = this.modelName().nativeElement.value;
+    const modelVersion = this.modelVersion().nativeElement.value;
     const apiKey = this.apiKey().nativeElement.value
-    if (modelName && apiKey) {
-      this.gemini.configure(modelName, apiKey);
+    if (modelVersion && apiKey) {
+      this.gemini.configure(modelVersion, apiKey);
     }
   }
 

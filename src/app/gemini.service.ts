@@ -46,9 +46,9 @@ export class GeminiService {
     this.systemInstruction = systemInstruction;
   }
 
-  configure(modelName: string, apiKey: string) {
+  configure(modelVersion: string, apiKey: string) {
     const genAI = new GoogleGenerativeAI(apiKey);
-    this.model = genAI.getGenerativeModel({ model: modelName });
+    this.model = genAI.getGenerativeModel({ model: modelVersion });
   }
 
   async generateResponse(prompt: string) {
