@@ -1,6 +1,8 @@
 @if(gemini.lastResponse && gemini.lastResponse.type != "none") {
 <div class="section">
-    <div class="label">Model response</div>
+    <app-helpful-label for="prompt" label="Model response">
+        The type and contents of the models last response.
+    </app-helpful-label>
 
     <div class="code last-response-type" [class]="gemini.lastResponse.type">
         @switch (gemini.lastResponse.type) {

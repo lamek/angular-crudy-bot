@@ -17,8 +17,6 @@ input,textarea {
 
 .section > * {
     display: flex;
-    align-items: flex-start;
-    gap: 4px;
     margin: 0 0 8x 0;
 }
 
