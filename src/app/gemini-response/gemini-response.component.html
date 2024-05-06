@@ -16,6 +16,6 @@
         }
     </div>
 
-    <div class="code last-response">{{gemini.lastResponse.response}}</div>
+    <div class="code last-response" [class]="gemini.lastResponse.type">{{gemini.lastResponse.response}}</div>
 </div>
 }
