@@ -2,7 +2,8 @@ body {
     font-family: sans-serif;
 }
 
-input,textarea {
+input,
+textarea {
     font-size: 100%;
 }
 
@@ -12,7 +13,7 @@ input,textarea {
     max-width: 800px;
 }
 
-.section > * {
+.section>* {
     display: flex;
     margin-bottom: 2px;
 }
@@ -20,6 +21,10 @@ input,textarea {
 code,
 .code {
     font-family: monospace;
+}
+
+code.example,
+.code.example {
     color: darkgreen;
 }
 

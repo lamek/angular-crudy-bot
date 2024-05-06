@@ -4,7 +4,7 @@
         The type and contents of the models last response.
     </app-helpful-label>
 
-    <div class="code last-response-type" [class]="gemini.lastResponse.type">
+    <div class="last-response-type" [class]="gemini.lastResponse.type">
         @switch (gemini.lastResponse.type) {
         @case ("waiting") {Waiting for response…}
         @case ("unknown") {Unknown response type}

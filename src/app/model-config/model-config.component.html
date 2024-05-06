@@ -1,6 +1,6 @@
 <div class="section">
     <app-helpful-label for="modelVersion" label="Model version">
-        A model version such as <code>{{defaultModelVersion}}</code>.
+        A model version such as <code class="example">{{defaultModelVersion}}</code>.
         See the Gemini API <a target="_blank"
             href="https://ai.google.dev/gemini-api/docs/models/gemini#model-versions">docs</a>
         for a list of available models.
@@ -25,7 +25,7 @@
 <!-- ---------------------------------------------------------------------- -->
 
 <div class="section">
-    <div>
+    <div style="align-items: baseline;">
         <input id="useSystemInstruction" #useSystemInstructionInput type="checkbox" [checked]="useSystemInstruction"
             (change)="useSystemInstruction = !useSystemInstruction; setSystemInstruction(useSystemInstructionInput.checked, systemInstructionInput.value)">
         <app-helpful-label for="useSystemInstruction" label="Use system instructions">
