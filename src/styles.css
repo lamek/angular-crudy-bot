@@ -17,7 +17,6 @@ input,textarea {
 
 .section > * {
     display: flex;
-    margin: 0 0 8x 0;
 }
 
 code,
