@@ -1,12 +1,14 @@
 import { Component, ElementRef, OnInit, viewChild } from '@angular/core';
 import { LogService } from '../log.service';
 import { GeminiService } from '../gemini.service';
+import { HelpfulLabelComponent } from '../helpful-label/helpful-label.component';
 
 @Component({
   selector: 'app-model-config',
   templateUrl: './model-config.component.html',
   styleUrl: './model-config.component.css',
   standalone: true,
+  imports: [HelpfulLabelComponent]
 })
 export class ModelConfigComponent implements OnInit {
   protected modelVersion = viewChild.required<ElementRef<HTMLInputElement>>('modelVersion');

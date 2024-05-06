@@ -1,20 +1,16 @@
 <div class="section">
 
     <div class="row">
-        <label for="modelVersion">Model version</label>
+        <app-helpful-label for="modelVersion" label="Model verion">
+            See available <a target="_blank"
+                href="https://ai.google.dev/gemini-api/docs/models/gemini#model-versions">model
+                versions</a>.
+        </app-helpful-label>
     </div>
 
     <div class="row">
         <input id="modelVersion" size="40" class="code" #modelVersion required (change)="configure()"
             value="gemini-1.5-pro-latest">
-    </div>
-
-    <div class="row help">
-        <div>
-            See available
-            <a target="_blank" href="https://ai.google.dev/gemini-api/docs/models/gemini#model-versions">model
-                versions</a>.
-        </div>
     </div>
 </div>
 
@@ -22,19 +18,15 @@
 
 <div class="section">
     <div class="row">
-        <label for="apiKey">API Key</label>
+        <app-helpful-label for="modelVersion" label="API Key">
+            Visit
+            <a target="_blank" href="https://aistudio.google.com/">Google AI Studio</a>, and click <b>Get API key</b>.
+        </app-helpful-label>
     </div>
 
     <div class="row">
         <input id="apiKey" size="40" placeholder="Paste in your Gemini API key" class="code" #apiKey required
             (change)="configure()" value="">
-    </div>
-
-    <div class="row help">
-        <div>
-            Visit
-            <a target="_blank" href="https://aistudio.google.com/">Google AI Studio</a>, and click <b>Get API key</b>.
-        </div>
     </div>
 </div>
 
