@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { DatabaseService } from '../database.service';
 import { GeminiService } from '../gemini.service';
 import { LogService } from '../log.service';
+import { HelpfulLabelComponent } from '../helpful-label/helpful-label.component';
 
 @Component({
   selector: 'app-db-panel',
   standalone: true,
-  imports: [],
+  imports: [HelpfulLabelComponent],
   templateUrl: './db-panel.component.html',
   styleUrl: './db-panel.component.css'
 })

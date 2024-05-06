@@ -19,8 +19,10 @@ export class ModelConfigComponent implements OnInit {
     protected gemini: GeminiService,
   ) { }
 
+  // https://ai.google.dev/gemini-api/docs/models/gemini#model-versions
+  defaultModelVersion = "gemini-1.5-pro-latest";
+  
   useSystemInstruction = true;
-
   systemInstruction = `You are an AI database agent.
 
   1. Users describe what data they would like to store in plain language.

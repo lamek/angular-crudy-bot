@@ -25,6 +25,7 @@ input,textarea {
 code,
 .code {
     font-family: monospace;
+    color: darkgreen;
 }
 
 label,
@@ -35,6 +36,6 @@ label,
 
 .help,
 .help a {
-    color: gray;
+    opacity: 0.8;
     font-size: 0.85rem;
 }

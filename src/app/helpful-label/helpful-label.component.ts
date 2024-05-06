@@ -10,4 +10,9 @@ import { Component, Input } from '@angular/core';
 export class HelpfulLabelComponent {
   @Input()
   label = "";
+
+  @Input()
+  for = "";
+  
+  show = false;
 }

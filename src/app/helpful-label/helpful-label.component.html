@@ -1,4 +1,7 @@
 <div>
-    <label class="label">{{label}}</label>
-    <div class="help"><ng-content/></div>
+    <label class="label" [for]="for">{{label}}</label>
+    <span class="material-symbols-outlined" (click)="show=!show">help</span>
+    <div>
+        <span class="help" [hidden]="!show"><ng-content /></span>
+    </div>
 </div>

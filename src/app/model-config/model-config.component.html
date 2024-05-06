@@ -1,22 +1,24 @@
 <div class="section">
     <app-helpful-label for="modelVersion" label="Model version">
-        See available <a target="_blank" href="https://ai.google.dev/gemini-api/docs/models/gemini#model-versions">model
-            versions</a>.
+        A model version such as <code>{{defaultModelVersion}}</code>.
+        See the Gemini API <a target="_blank"
+            href="https://ai.google.dev/gemini-api/docs/models/gemini#model-versions">docs</a>
+        for a list of available models.
     </app-helpful-label>
 
-    <input id="modelVersion" size="40" class="code" #modelVersion required (change)="configure()"
-        value="gemini-1.5-pro-latest">
+    <input id="modelVersion" #modelVersion size="40" class="code" required (change)="configure()"
+        [value]="defaultModelVersion">
 </div>
 
 <!-- ---------------------------------------------------------------------- -->
 
 <div class="section">
-    <app-helpful-label for="modelVersion" label="API Key">
-        Visit
-        <a target="_blank" href="https://aistudio.google.com/">Google AI Studio</a>, and click <b>Get API key</b>.
+    <app-helpful-label for="apiKey" label="API Key">
+        To obtain an API key, visit
+        <a target="_blank" href="https://aistudio.google.com/">Google AI Studio</a> and click <b>Get API key</b>.
     </app-helpful-label>
 
-    <input id="apiKey" size="40" placeholder="Paste in your Gemini API key" class="code" #apiKey required
+    <input id="apiKey" #apiKey size="40" placeholder="Paste in your Gemini API key" class="code" required
         (change)="configure()" value="">
 </div>
 
@@ -24,9 +26,12 @@
 
 <div class="section">
     <div>
-        <input type="checkbox" [checked]="useSystemInstruction" #useSystemInstructionInput
+        <input id="useSystemInstruction" #useSystemInstructionInput type="checkbox" [checked]="useSystemInstruction"
             (change)="useSystemInstruction = !useSystemInstruction; setSystemInstruction(useSystemInstructionInput.checked, systemInstructionInput.value)">
-        <label for="prompt">Use system instruction</label>
+        <app-helpful-label for="useSystemInstruction" label="Use system instructions">
+            <a target="_blank" href="https://ai.google.dev/gemini-api/docs/system-instructions">System instructions</a>
+            help steer model behavior. Try comparing model performance with and without these instructions.
+        </app-helpful-label>
     </div>
 
     <textarea (change)="setSystemInstruction(useSystemInstructionInput.checked, systemInstructionInput.value)"
