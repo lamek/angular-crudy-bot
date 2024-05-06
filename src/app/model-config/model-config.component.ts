@@ -34,7 +34,7 @@ export class ModelConfigComponent implements OnInit {
      - Determine whether any tables and/or columns are missing.
      - Identify which columns need to moved to different tables.
      
-  4. Respond with mutliple function calls to fully update the schema.
+  4. Respond with multiple function calls to fully update the schema.
      - Create all missing tables.
      - Alter existing tables to add missing columns.
      - Delete columns that have been moved to another table.
