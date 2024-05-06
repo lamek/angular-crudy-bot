@@ -1,0 +1,24 @@
+@if(gemini.lastResponse && gemini.lastResponse.type != "none") {
+<div class="section">
+    <div class="row">
+        <div class="label">Model response</div>
+    </div>
+
+    <div class="row">
+        <code class="last-response-type" [class]="gemini.lastResponse.type">
+            @switch (gemini.lastResponse.type) {
+              @case ("waiting") {Waiting for response…}
+              @case ("unknown") {Unknown response type}
+              @case ("functionCalls") {Function Calls}
+              @case ("invalidFunctionCalls") {Function Calls with one or more unknown functions}
+              @case ("text") {Text response}
+              @case ("error") {Error}
+              @default { {{gemini.lastResponse.type}} }
+            }
+          </code>
+    </div>
+    <div class="row">
+        <code class="last-response">{{gemini.lastResponse.response}}</code>
+    </div>
+</div>
+}

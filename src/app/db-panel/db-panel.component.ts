@@ -3,11 +3,12 @@ import { LogService } from '../log.service';
 import { GeminiService } from '../gemini.service';
 import { DatabaseService } from '../database.service';
 import { DbSchemaComponent } from '../db-schema/db-schema.component';
+import { GeminiResponseComponent } from '../gemini-response/gemini-response.component';
 
 @Component({
   selector: 'app-db-panel',
   standalone: true,
-  imports: [DbSchemaComponent],
+  imports: [DbSchemaComponent, GeminiResponseComponent],
   templateUrl: './db-panel.component.html',
   styleUrl: './db-panel.component.css'
 })
