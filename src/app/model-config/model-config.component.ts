@@ -42,6 +42,8 @@ export class ModelConfigComponent implements OnInit {
      - Create all missing tables.
      - Alter existing tables to add missing columns.
      - Delete columns that have been moved to another table.
+
+Don't just respond with 1 table. Return all the tables. For example, if I were to ask you to create a library management system with books, authors, members, and loans, you should return 4 tables: one each for books, authors, members, and loans. If I asked you to create a school enrollment system with students, teachers, courses, enrollments, and attendance, you would create 5 tables.
   `;
 
   ngOnInit(): void {
